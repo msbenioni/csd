@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Booking {
+  id             String     @id @default(cuid())
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  date           DateTime
+  time           String
+  frequency      String     // "once", "daily", "weekly", "monthly"
+  numberOfBags   Int
+  location       String
+  autoDeduct     Boolean    @default(false)
+  status         String     @default("pending") // "pending", "confirmed", "completed", "cancelled"
+  totalAmount    Float
+  paymentStatus  String     @default("pending") // "pending", "paid", "refunded"
+  paymentId      String?    // Stripe payment intent ID
+  customerId     String     // Related to the Customer model
+  customer       Customer   @relation(fields: [customerId], references: [id])
+  subscriptionId String?    // For recurring bookings
+}
+
+model Customer {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  email     String    @unique
+  name      String
+  phone     String?
+  address   String?
+  bookings  Booking[]
+  stripeCustomerId String?  // For recurring payments
+}
+
+model TimeSlot {
+  id        String   @id @default(cuid())
+  date      DateTime
+  time      String
+  available Boolean  @default(true)
+
+  @@unique([date, time])
+}
