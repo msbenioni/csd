@@ -1,0 +1,20 @@
+.calendarWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.controlsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.calendarContainer {
+  height: 500px;
+}
+
+.button {
+  color: white;
+}
