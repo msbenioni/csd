@@ -1,3 +1,5 @@
+"use client";
+import { PlaceholderImage } from "../ui/PlaceholderImage";
 import { motion } from "framer-motion";
 import {
   Card,
@@ -31,14 +33,14 @@ const testimonials = [
   },
 ];
 
-export function Testimonials() {
+const Testimonials = () => {
   return (
     <section className="py-24">
       <div className="container px-4 mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold mb-4">What Our Customers Say</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Don't just take our word for it - hear from some of our satisfied
+          <p className="max-w-2xl mx-auto">
+            Dont just take our word for it - hear from some of our satisfied
             customers
           </p>
         </div>
@@ -64,13 +66,13 @@ export function Testimonials() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 italic">
-                    "{testimonial.comment}"
+                  <p className="italic">
+                    &ldquo;{testimonial.comment}&rdquo;
                   </p>
                 </CardContent>
                 <CardFooter className="flex flex-col items-start">
                   <div className="font-semibold">{testimonial.name}</div>
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm">
                     {testimonial.location}
                   </div>
                 </CardFooter>
@@ -81,4 +83,6 @@ export function Testimonials() {
       </div>
     </section>
   );
-}
+};
+
+export default Testimonials;

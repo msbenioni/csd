@@ -1,4 +1,12 @@
 // lib/utils.ts
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+interface Booking {
+  date: string;
+  time: string;
+}
+
 export function calculatePrice(numberOfBags: number): number {
   const removalFee = numberOfBags > 2 ? 6 : 0;
   const bagFee = numberOfBags * 8;
@@ -8,7 +16,7 @@ export function calculatePrice(numberOfBags: number): number {
 export function generateTimeSlots(): string[] {
   const slots: string[] = [];
   for (let hour = 7; hour <= 16; hour++) {
-    for (let minute of ["00", "30"]) {
+    for (const minute of ["00", "30"]) {
       if (hour < 16 || (hour === 16 && minute === "00")) {
         slots.push(`${hour.toString().padStart(2, "0")}:${minute}`);
       }
@@ -20,7 +28,7 @@ export function generateTimeSlots(): string[] {
 export function isTimeSlotAvailable(
   selectedDate: Date,
   selectedTime: string,
-  existingBookings: any[]
+  existingBookings: Booking[]
 ): boolean {
   const bookingDate = selectedDate.toISOString().split("T")[0];
   return !existingBookings.some(
@@ -39,7 +47,7 @@ export function formatCurrency(amount: number): string {
 
 export function getNextAvailableSlot(
   date: Date,
-  existingBookings: any[]
+  existingBookings: Booking[]
 ): { date: Date; time: string } | null {
   const timeSlots = generateTimeSlots();
   const currentDate = new Date(date);
@@ -54,4 +62,8 @@ export function getNextAvailableSlot(
   }
 
   return null;
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }

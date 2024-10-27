@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "framer-motion";
 import {
   Card,
@@ -10,7 +12,7 @@ import { Check } from "lucide-react";
 
 export function Pricing() {
   return (
-    <section className="py-24 bg-gray-50">
+    <section id="pricing" className="py-24 bg-gradient-to-b from-white to-blue-900">
       <div className="container px-4 mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold mb-4">
@@ -28,7 +30,7 @@ export function Pricing() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
         >
-          <Card className="max-w-2xl mx-auto">
+          <Card className="max-w-2xl mx-auto bg-[#f4ea1c]/90 backdrop-blur-sm rounded-xl overflow-hidden">
             <CardHeader>
               <div className="text-center">
                 <h3 className="text-2xl font-bold mb-2">Per Bag Pricing</h3>
@@ -38,35 +40,29 @@ export function Pricing() {
               </div>
             </CardHeader>
             <CardContent>
-              <ul className="space-y-4">
+              <ul className="space-y-4 max-w-md text-gray-600 mx-auto">
                 <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-2" />
-                  <span>$8 per bag (max 20kg each)</span>
+                  <div className="w-7 h-7 mr-3 border-2 border-green-500 rounded-md flex items-center justify-center flex-shrink-0">
+                    <Check className="w-5 h-5 text-green-500 stroke-[3]" />
+                  </div>
+                  <span>$8 per bag (max 10kg/bag)</span>
                 </li>
                 <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Free removal for single bags</span>
+                  <div className="w-7 h-7 mr-3 border-2 border-green-500 rounded-md flex items-center justify-center flex-shrink-0">
+                    <Check className="w-5 h-5 text-green-500 stroke-[3]" />
+                  </div>
+                  <span>+$6 service fee</span>
                 </li>
                 <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-2" />
-                  <span>$6 removal fee for more than two bags</span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Flexible scheduling options</span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-2" />
+                  <div className="w-7 h-7 mr-3 border-2 border-green-500 rounded-md flex items-center justify-center flex-shrink-0">
+                    <Check className="w-5 h-5 text-green-500 stroke-[3]" />
+                  </div>
                   <span>Available daily from 7 AM to 4 PM</span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Subscription discounts available</span>
                 </li>
               </ul>
             </CardContent>
-            <CardFooter>
-              <Button className="w-full" size="lg" asChild>
+            <CardFooter className="p-6">
+              <Button className="w-full text-white" size="lg" asChild>
                 <a href="/booking">Book Now</a>
               </Button>
             </CardFooter>

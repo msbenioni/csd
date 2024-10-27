@@ -1,16 +1,16 @@
 "use client";
-
+import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import Link from 'next/link';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
     { label: "Home", href: "/" },
-    { label: "Services", href: "#services" },
-    { label: "Pricing", href: "#pricing" },
+    { label: "Pricing", href: "/#pricing" },
     { label: "Book Now", href: "/booking" },
   ];
 
@@ -18,25 +18,31 @@ export function Header() {
     <header className="fixed w-full bg-white/80 backdrop-blur-md z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <a href="/" className="font-bold text-xl text-blue-600">
-            Clean Sweep Duo
-          </a>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/images/duologo.png"
+              alt="Clean Sweep Duo Logo"
+              width={150}
+              height={50}
+              priority
+            />
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item, index) =>
               item.label === "Book Now" ? (
-                <a key={index} href={item.href} className="w-full">
-                  <Button className="w-full">{item.label}</Button>
-                </a>
+                <Link key={index} href={item.href} className="w-full">
+                  <Button className="w-full text-white transition-colors duration-600">{item.label}</Button>
+                </Link>
               ) : (
-                <a
+                <Link
                   key={index}
                   href={item.href}
-                  className="text-gray-600 hover:text-blue-600 transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors duration-600"
                 >
                   {item.label}
-                </a>
+                </Link>
               )
             )}
           </nav>
@@ -60,18 +66,18 @@ export function Header() {
             <nav className="flex flex-col space-y-4">
               {navItems.map((item, index) =>
                 item.label === "Book Now" ? (
-                  <a key={index} href={item.href} className="w-full">
-                    <Button className="w-full">{item.label}</Button>
-                  </a>
+                  <Link key={index} href={item.href} className="w-full">
+                    <Button className="w-full transition-colors duration-600">{item.label}</Button>
+                  </Link>
                 ) : (
-                  <a
+                  <Link
                     key={index}
                     href={item.href}
-                    className="text-gray-600 hover:text-blue-600 transition-colors"
+                    className="text-gray-600 hover:text-blue-600 transition-colors duration-600"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 )
               )}
             </nav>
