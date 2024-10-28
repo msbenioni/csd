@@ -1,5 +1,6 @@
 "use client";
 
+import { FC } from "react";
 import { motion } from "framer-motion";
 import {
   Card,
@@ -10,18 +11,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 
-export function Pricing() {
+export const Pricing: FC = () => {
   return (
-    <section id="pricing" className="py-24 bg-gradient-to-b from-white to-blue-900">
-      <div className="container px-4 mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4">
-            Simple, Transparent Pricing
+    <section id="pricing" className="py-16 bg-[#1f2a44]">
+      <div className="container px-4 mx-auto pt-16">
+        <div className="text-center mb-24">
+          <h2 className="text-5xl font-extrabold text-[#ffc107] mb-4">
+            No Hidden Fees Just Simple Pricing
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            No hidden fees, just straightforward pricing for all your rubbish
-            removal needs
-          </p>
         </div>
 
         <motion.div
@@ -29,40 +26,43 @@ export function Pricing() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
+          className="relative z-30"
         >
-          <Card className="max-w-2xl mx-auto bg-[#f4ea1c]/90 backdrop-blur-sm rounded-xl overflow-hidden">
+          <Card className="max-w-2xl mx-auto bg-gradient-to-r from-pink-500 to-pink-600/90 backdrop-blur-lg rounded-3xl shadow-lg overflow-hidden neon-card">
             <CardHeader>
-              <div className="text-center">
-                <h3 className="text-2xl font-bold mb-2">Per Bag Pricing</h3>
-                <div className="text-4xl font-bold">
-                  $8<span className="text-lg text-gray-500">/bag</span>
+              <div className="text-center p-8">
+                <div className="text-6xl font-extrabold text-white">
+                  $8
+                  <span className="text-2xl text-white">
+                    {" "}
+                    / per bag (max 10kg)
+                  </span>
+                  <p className="text-lg text-white">(no loose items)</p>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              <ul className="space-y-4 max-w-md text-gray-600 mx-auto">
-                <li className="flex items-center">
-                  <div className="w-7 h-7 mr-3 border-2 border-green-500 rounded-md flex items-center justify-center flex-shrink-0">
-                    <Check className="w-5 h-5 text-green-500 stroke-[3]" />
-                  </div>
-                  <span>$8 per bag (max 10kg/bag)</span>
-                </li>
-                <li className="flex items-center">
-                  <div className="w-7 h-7 mr-3 border-2 border-green-500 rounded-md flex items-center justify-center flex-shrink-0">
-                    <Check className="w-5 h-5 text-green-500 stroke-[3]" />
+              <ul className="space-y-6 max-w-md mx-auto">
+                <li className="flex items-center p-6 bg-white rounded-xl shadow-md text-lg font-semibold text-[#1f2a44] neon-box">
+                  <div className="w-10 h-10 mr-4 bg-green-500 rounded-full flex items-center justify-center neon-check">
+                    <Check className="w-6 h-6 text-white stroke-[3]" />
                   </div>
                   <span>+$6 service fee</span>
                 </li>
-                <li className="flex items-center">
-                  <div className="w-7 h-7 mr-3 border-2 border-green-500 rounded-md flex items-center justify-center flex-shrink-0">
-                    <Check className="w-5 h-5 text-green-500 stroke-[3]" />
+                <li className="flex items-center p-6 bg-white rounded-xl shadow-md text-lg font-semibold text-[#1f2a44] neon-box">
+                  <div className="w-10 h-10 mr-4 bg-green-500 rounded-full flex items-center justify-center neon-check">
+                    <Check className="w-6 h-6 text-white stroke-[3]" />
                   </div>
-                  <span>Available daily from 7 AM to 4 PM</span>
+                  <span>Pickup available daily from 7 AM to 4 PM</span>
                 </li>
               </ul>
             </CardContent>
-            <CardFooter className="p-6">
-              <Button className="w-full text-white" size="lg" asChild>
+            <CardFooter className="p-8 flex justify-center">
+              <Button
+                className="w-1/2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold py-4 rounded-full shadow-lg transform hover:scale-105 transition duration-300 text-xl"
+                size="lg"
+                asChild
+              >
                 <a href="/booking">Book Now</a>
               </Button>
             </CardFooter>
@@ -71,4 +71,4 @@ export function Pricing() {
       </div>
     </section>
   );
-}
+};

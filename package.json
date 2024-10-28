@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "shadcn-ui": "npx shadcn-ui@latest"
+    "shadcn-ui": "npx shadcn-ui@latest",
+    "clean": "Remove-Item -Recurse -Force .next",
+    "clean-node": "Remove-Item -Recurse -Force node_modules"
   },
   "dependencies": {
     "@prisma/client": "^5.21.1",
