@@ -13,8 +13,8 @@ import { Check } from "lucide-react";
 
 export const Pricing: FC = () => {
   return (
-    <section id="pricing" className="py-16 bg-[#1f2a44]">
-      <div className="container px-4 mx-auto pt-16">
+    <section id="pricing" className="pb-16 bg-[#1f2a44]">
+      <div className="container px-4 mx-auto">
         <div className="text-center mb-24">
           <h2 className="text-5xl font-extrabold text-[#ffc107] mb-4">
             No Hidden Fees Just Simple Pricing

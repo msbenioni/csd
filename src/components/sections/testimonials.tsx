@@ -1,5 +1,4 @@
 "use client";
-import { PlaceholderImage } from "../ui/PlaceholderImage";
 import { motion } from "framer-motion";
 import {
   Card,
@@ -11,36 +10,37 @@ import { Star } from "lucide-react";
 
 const testimonials = [
   {
-    name: "Sarah Johnson",
-    location: "Howick",
+    name: "Sarah",
+    location: "Ormiston",
     comment:
-      "Clean Sweep Duo has been fantastic! Their regular pickup service is reliable and their communication is excellent. The mother-daughter team is always professional and friendly.",
+      "Clean Sweep Duo has been fantastic! Its just so easy to book and know you wont be charged any extra.",
     rating: 5,
   },
   {
-    name: "David Thompson",
+    name: "David",
     location: "Pakuranga",
     comment:
-      "I love how easy it is to schedule pickups through their website. The pricing is transparent and the service is always on time. Couldn't ask for better!",
+      "I love how easy it is to schedule pickups through their website. Couldnt ask for better!",
     rating: 5,
   },
   {
-    name: "Michelle Lee",
+    name: "Michelle",
     location: "Botany Downs",
-    comment:
-      "Their subscription service is perfect for my business. They're always punctual and handle our waste disposal needs efficiently. Great local service!",
+    comment: "Great local service!",
     rating: 5,
   },
 ];
 
-const Testimonials = () => {
+export const Testimonials = () => {
   return (
-    <section className="py-24">
+    <section className="py-24 bg-gradient-to-r from-pink-700 to-[#8B1E3F]">
       <div className="container px-4 mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4">What Our Customers Say</h2>
-          <p className="max-w-2xl mx-auto">
-            Dont just take our word for it - hear from some of our satisfied
+          <h2 className="text-4xl font-extrabold text-white mb-4">
+            What Our Customers Say
+          </h2>
+          <p className="text-xl max-w-2xl mx-auto text-[#ffe5e5] font-medium">
+            Dont just take our word for it – hear from some of our satisfied
             customers
           </p>
         </div>
@@ -54,25 +54,27 @@ const Testimonials = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
             >
-              <Card className="h-full hover:shadow-lg transition-shadow">
+              <Card className="h-full bg-white rounded-3xl p-6 shadow-md hover:shadow-xl transform hover:scale-105 transition duration-300">
                 <CardHeader>
                   <div className="flex space-x-1 mb-4">
                     {Array.from({ length: testimonial.rating }).map((_, i) => (
                       <Star
                         key={i}
-                        className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                        className="w-6 h-6 text-yellow-400 fill-yellow-400"
                       />
                     ))}
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="italic">
+                  <p className="italic text-[#1f2a44] text-lg">
                     &ldquo;{testimonial.comment}&rdquo;
                   </p>
                 </CardContent>
-                <CardFooter className="flex flex-col items-start">
-                  <div className="font-semibold">{testimonial.name}</div>
-                  <div className="text-sm">
+                <CardFooter className="flex flex-col items-start mt-4">
+                  <div className="font-bold text-xl text-[#1f2a44]">
+                    {testimonial.name}
+                  </div>
+                  <div className="text-sm text-gray-600">
                     {testimonial.location}
                   </div>
                 </CardFooter>
@@ -84,5 +86,3 @@ const Testimonials = () => {
     </section>
   );
 };
-
-export default Testimonials;
