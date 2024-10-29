@@ -1,5 +1,6 @@
 import React from "react";
 import moment from "moment";
+import { Button } from "@/components/ui/button";
 import "./TimeSlots.css";
 
 interface Slot {
@@ -22,11 +23,16 @@ export function TimeSlots({ date, slots, onSelectTime }: TimeSlotsProps) {
   return (
     <div>
       <h3>Available time slots for {moment(date).format("MMMM D, YYYY")}</h3>
-      <div className="time-slots-grid">
+      <div className="grid grid-cols-4 gap-2 p-4">
         {availableSlots.map((slot) => (
-          <button key={slot.getTime()} onClick={() => onSelectTime(slot)}>
+          <Button
+            key={slot.getTime()}
+            onClick={() => onSelectTime(slot)}
+            variant="outline"
+            className="w-full"
+          >
             {moment(slot).format("h:mm A")}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

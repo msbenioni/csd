@@ -55,6 +55,13 @@ export const Pricing: FC = () => {
                   </div>
                   <span>Pickup available daily from 7 AM to 4 PM</span>
                 </li>
+                <li className="flex items-center p-6 bg-white rounded-xl shadow-md text-lg font-semibold text-[#1f2a44] neon-box">
+                  <div className="w-10 h-10 mr-4 bg-green-500 rounded-full flex items-center justify-center neon-check">
+                    <Check className="w-6 h-6 text-white stroke-[3]" />
+                  </div>
+                  <span>Servicing East & South Auckland <br />
+                    (other areas coming soon)</span>
+                </li>
               </ul>
             </CardContent>
             <CardFooter className="p-8 flex justify-center">

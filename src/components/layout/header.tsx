@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import clsx from "clsx";
 import { motion } from "framer-motion";
 
 export function Header() {
@@ -28,11 +27,7 @@ export function Header() {
 
   return (
     <header
-      className="fixed w-full top-0 z-50 transition-all duration-300"
-      style={{
-        background: "rgba(255, 255, 255, 0.2)",
-        backdropFilter: "blur(10px)",
-      }}
+      className="fixed w-full top-0 z-50 transition-all duration-300 bg-white/20 backdrop-blur-md"
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
