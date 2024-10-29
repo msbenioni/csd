@@ -28,7 +28,7 @@ export const Pricing: FC = () => {
           viewport={{ once: true }}
           className="relative z-30"
         >
-          <Card className="max-w-2xl mx-auto bg-gradient-to-r from-pink-500 to-pink-600/90 backdrop-blur-lg rounded-3xl shadow-lg overflow-hidden neon-card">
+          <Card className="max-w-2xl mx-auto bg-[#8B1E3F] backdrop-blur-lg rounded-3xl shadow-lg overflow-hidden neon-card">
             <CardHeader>
               <div className="text-center p-8">
                 <div className="text-6xl font-extrabold text-white">
@@ -59,8 +59,10 @@ export const Pricing: FC = () => {
                   <div className="w-10 h-10 mr-4 bg-green-500 rounded-full flex items-center justify-center neon-check">
                     <Check className="w-6 h-6 text-white stroke-[3]" />
                   </div>
-                  <span>Servicing East & South Auckland <br />
-                    (other areas coming soon)</span>
+                  <span>
+                    Servicing East & South Auckland <br />
+                    (other areas coming soon)
+                  </span>
                 </li>
               </ul>
             </CardContent>
