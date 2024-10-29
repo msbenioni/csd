@@ -66,56 +66,16 @@ export function DynamicCalendar({ isAdmin, onConfirm }: DynamicCalendarProps) {
     }
   };
 
-  const bookSlot = async (date: Date) => {
-    await fetch("/api/book-slot", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        start: date,
-        end: new Date(date.getTime() + 3600000),
-      }),
-    });
-    setMessage("Slot booked successfully!");
-  };
-
-  const blockUnavailableTime = async (date: Date) => {
-    await fetch("/api/block-unavailable-time", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        start: date,
-        end: new Date(date.getTime() + 3600000),
-      }),
-    });
-    setMessage("Time blocked successfully!");
-  };
-
   const eventStyleGetter = (event: Slot) => {
     if (event.isUnavailable) {
       return {
-        style: {
-          backgroundColor: "rgba(255, 0, 0, 0.5)",
-          color: "white",
-          borderRadius: "5px",
-        },
+        className: "bg-red-500/50 rounded",
       };
     }
     return {
-      style: {
-        backgroundColor: "rgba(64, 224, 208, 0.8)",
-        color: "white",
-        borderRadius: "5px",
-      },
+      className: "bg-primary/80 hover:bg-primary hover:text-white transition-colors rounded",
     };
   };
-
-  const isCurrentMonth =
-    currentMonth.getMonth() === new Date().getMonth() &&
-    currentMonth.getFullYear() === new Date().getFullYear();
-
-  const isNextMonth =
-    currentMonth.getMonth() === new Date().getMonth() + 1 &&
-    currentMonth.getFullYear() === new Date().getFullYear();
 
   return (
     <div className={styles.pageWrapper}>
@@ -124,15 +84,25 @@ export function DynamicCalendar({ isAdmin, onConfirm }: DynamicCalendarProps) {
           <Button
             onClick={handleCurrentMonth}
             className={`${styles.button} ${
-              isCurrentMonth ? styles.disabled : ""
+              currentMonth.getMonth() === new Date().getMonth() &&
+              currentMonth.getFullYear() === new Date().getFullYear()
+                ? "opacity-50 cursor-not-allowed"
+                : "bg-primary text-white hover:bg-primary/90"
             }`}
           >
             Current Month
           </Button>
-          <h2>{moment(currentMonth).format("MMMM YYYY")}</h2>
+          <h2 className="font-bold text-white text-2xl">
+            {moment(currentMonth).format("MMMM YYYY")}
+          </h2>
           <Button
             onClick={handleNextMonth}
-            className={`${styles.button} ${isNextMonth ? styles.disabled : ""}`}
+            className={`${styles.button} ${
+              currentMonth.getMonth() === new Date().getMonth() + 1 &&
+              currentMonth.getFullYear() === new Date().getFullYear()
+                ? "opacity-50 cursor-not-allowed"
+                : "bg-primary text-white hover:bg-primary/90"
+            }`}
           >
             Next Month
           </Button>
@@ -148,7 +118,6 @@ export function DynamicCalendar({ isAdmin, onConfirm }: DynamicCalendarProps) {
             onSelectSlot={handleSelectSlot}
             view="month"
             date={currentMonth}
-            onNavigate={() => {}}
             toolbar={false}
             eventPropGetter={eventStyleGetter}
             views={["month"]}
@@ -160,12 +129,16 @@ export function DynamicCalendar({ isAdmin, onConfirm }: DynamicCalendarProps) {
             date={selectedDate}
             slots={slots}
             onSelectTime={(time) => setSelectedTime(time)}
+            selectedDate={selectedDate} // Pass the selected date
           />
         )}
 
         {selectedDate && selectedTime && (
-          <Button onClick={handleConfirm} className={`mt-4 ${styles.button}`}>
-            Book Pickup
+          <Button
+            onClick={handleConfirm}
+            className="mt-4 bg-gradient-to-r from-[#FFD700] to-[#FF4500] hover:from-[#FF4500]/90 hover:to-[#ffd700]/90 text-white py-6 px-8 text-xl font-semibold transition-all"
+          >
+            Confirm Date & Time Selected
           </Button>
         )}
         {message && <p className="mt-2 text-sm text-green-600">{message}</p>}

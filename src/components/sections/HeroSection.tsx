@@ -22,10 +22,10 @@ export const HeroSection: FC = () => {
             <span className="text-[#FF6347]">Easy & Affordable!</span>
           </h1>
           <p className="text-2xl text-[#FFB6C1] mb-8 max-w-2xl mx-auto font-medium">
-            A small family business with a{" "}
+            A SMALL family business with a{" "}
             <span className="font-bold">BIG</span> mission:
             <br />
-            Keeping the neighbourhood clean, one cute bag at a time!
+            Hassle free rubbish removal at an affordable price!
           </p>
           <div className="flex gap-4 justify-center mt-6">
             <Button

@@ -3,12 +3,12 @@ import { FC } from "react";
 export const AboutUsSection: FC = () => {
   return (
     <section className="relative py-16 bg-[#8B1E3F] z-0">
-      <div className="container mx-auto px-4 pt-10">
+      <div className="container mx-auto px-4 pt-10 max-w-7xl">
         <h2 className="text-5xl font-bold mb-8 text-center text-[#FFD700]">
           About Us
         </h2>
         <div className="max-w-3xl mx-auto p-8 bg-white rounded-3xl shadow-xl">
-          <p className="mb-6 text-lg text-[#555555] leading-relaxed">
+          <p className="mb-6 text-xl font-medium text-[#555555] leading-relaxed">
             Living in a multi-generational home (with more people in our house
             than we had bedrooms for due to high rental prices), we quickly
             found ourselves drowning in extra rubbish that didn’t fit in the
@@ -16,8 +16,8 @@ export const AboutUsSection: FC = () => {
             noticed we were not the only ones with this problem, as some folks
             were turning to sneaky roadside dumping for their extra bags.
           </p>
-          <p className="mb-6 text-lg text-[#555555] leading-relaxed">
-            That’s when{" "}
+          <p className="mb-6 text-xl font-medium text-[#555555] leading-relaxed">
+            Thats when{" "}
             <span className="font-bold text-[#ffc107]">Clean Sweep Duo</span>{" "}
             was born! We are a mother-daughter team with a mission: to make
             rubbish removal simple, affordable, and, dare we say, a bit

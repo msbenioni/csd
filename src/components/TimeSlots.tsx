@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import { Button } from "@/components/ui/button";
 import "./TimeSlots.css";
@@ -15,21 +15,43 @@ interface TimeSlotsProps {
   date: Date;
   slots: Slot[];
   onSelectTime: (time: Date) => void;
+  selectedDate: Date; // New prop for selected date
 }
 
-export function TimeSlots({ date, slots, onSelectTime }: TimeSlotsProps) {
+export function TimeSlots({
+  date,
+  slots,
+  onSelectTime,
+  selectedDate,
+}: TimeSlotsProps) {
+  const [selectedTime, setSelectedTime] = useState<Date | null>(null);
   const availableSlots = generateAvailableSlots(date, slots);
+
+  const handleSelectTime = (time: Date) => {
+    setSelectedTime(time);
+    onSelectTime(time);
+  };
+
+  const isDateSelected = moment(date).isSame(selectedDate, "day");
 
   return (
     <div>
-      <h3>Available time slots for {moment(date).format("MMMM D, YYYY")}</h3>
+      <h3
+        className={`text-lg text-center p-4 rounded-lg ${isDateSelected ? "bg-primary text-white" : ""}`}
+      >
+        Select a time for {moment(date).format("MMMM D, YYYY")}
+      </h3>
       <div className="grid grid-cols-4 gap-2 p-4">
         {availableSlots.map((slot) => (
           <Button
             key={slot.getTime()}
-            onClick={() => onSelectTime(slot)}
+            onClick={() => handleSelectTime(slot)}
             variant="outline"
-            className="w-full"
+            className={`w-full hover:bg-primary hover:text-white ${
+              selectedTime?.getTime() === slot.getTime()
+                ? "bg-primary text-white"
+                : ""
+            }`}
           >
             {moment(slot).format("h:mm A")}
           </Button>

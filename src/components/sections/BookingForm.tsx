@@ -9,11 +9,13 @@ export function BookingForm({ isAdmin }: { isAdmin: boolean }) {
   const router = useRouter();
 
   return (
-    <Card className="p-6">
-      <h2 className="text-xl font-bold mb-4 text-center">
-        Select a Date and Time
-      </h2>
-      <DynamicCalendarWithRouter isAdmin={isAdmin} router={router} />
-    </Card>
+    <div className="container mx-auto px-4 py-16">
+      <Card className="p-6">
+        <h2 className="text-xl font-bold mb-4 text-center">
+          Select a Date and Time
+        </h2>
+        <DynamicCalendarWithRouter isAdmin={isAdmin} router={router} />
+      </Card>
+    </div>
   );
 }

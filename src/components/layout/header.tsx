@@ -26,9 +26,7 @@ export function Header() {
   ];
 
   return (
-    <header
-      className="fixed w-full top-0 z-50 transition-all duration-300 bg-white/20 backdrop-blur-md"
-    >
+    <header className="fixed w-full top-0 z-50 transition-all duration-300 bg-gradient-to-b from-pink-700 to-[#8B1E3F]/20 backdrop-blur-md">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center">
