@@ -4,11 +4,7 @@ import { AboutUsSection } from "@/components/sections/AboutUsSection";
 import { HowItWorksSection } from "@/components/sections/HowItWorksSection";
 import { Pricing } from "@/components/sections/Pricing";
 import { Testimonials } from "@/components/sections/Testimonials";
-import dynamic from "next/dynamic";
-
-const Map = dynamic(() => import("@/components/Map"), {
-  ssr: false,
-});
+import { ServiceAreas } from "@/components/sections/ServiceAreas";
 
 export default function Home() {
   return (
@@ -17,11 +13,7 @@ export default function Home() {
       <AboutUsSection />
       <HowItWorksSection />
       <Pricing />
-      <Map
-        center={{ lat: 40.7128, lng: -74.006 }}
-        zoom={10}
-        serviceAreas={[]}
-      />
+      <ServiceAreas />
       <Testimonials />
     </>
   );

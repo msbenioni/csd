@@ -63,43 +63,6 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Service Area Notification */}
-        <div>
-          <h4 className="font-bold text-lg mb-2">
-            Do You Want Us In Your Area?
-          </h4>
-          <form
-            className="space-y-3"
-            onSubmit={(e) => {
-              e.preventDefault();
-              // TODO: Add form submission logic
-            }}
-          >
-            <select
-              className="w-full p-2 rounded text-gray-800"
-              aria-label="Select your area"
-              required
-            >
-              <option value="">Select Your Area</option>
-              <option value="north-shore">North Shore Auckland</option>
-              <option value="west-auckland">West Auckland</option>
-              <option value="central-auckland">Central Auckland</option>
-              <option value="waikato">Waikato</option>
-            </select>
-            <input
-              type="email"
-              placeholder="Your Email"
-              className="w-full p-2 rounded text-gray-800"
-              required
-            />
-            <button
-              type="submit"
-              className="w-full bg-yellow-400 text-gray-800 py-2 px-4 rounded hover:bg-yellow-500 transition-colors"
-            >
-              Notify Me When Available
-            </button>
-          </form>
-        </div>
       </div>
     </footer>
   );
