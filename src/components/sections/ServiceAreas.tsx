@@ -44,28 +44,31 @@ export const ServiceAreas: React.FC = () => {
     const isServiced = checkServiceArea(interestForm.postcode);
     setIsInServiceArea(isServiced);
 
+    if (isServiced) {
+      setMessage("Great news! We service your area. Redirecting to booking...");
+      setTimeout(() => {
+        router.push("/booking");
+      }, 1500);
+    } else {
+      setMessage(
+        "Unfortunately we do not service here, yet. Click 'Register Interest' to be notified when we do."
+      );
+    }
+  };
+
+  const handleRegisterInterest = async () => {
     try {
-      if (isServiced) {
-        setMessage(
-          "Great news! We service your area. Redirecting to booking..."
-        );
-        // Wait a brief moment to show the message before redirecting
-        setTimeout(() => {
-          router.push("/booking");
-        }, 1500);
-      } else {
-        // Store interest for unserviced area
-        await fetch("/api/interest", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(interestForm),
-        });
-        setMessage(
-          "Thank you! We will email you when we start servicing your area."
-        );
-        setInterestForm({ email: "", address: "", suburb: "", postcode: "" }); // Clear form
-      }
+      setMessage("Processing your request...");
+      await fetch("/api/interest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(interestForm),
+      });
+      setMessage(
+        "Thank you! We will notify you when we start servicing your area."
+      );
     } catch (error) {
+      console.error(error);
       setMessage("Something went wrong. Please try again.");
     }
   };
@@ -77,13 +80,12 @@ export const ServiceAreas: React.FC = () => {
           Service Areas
         </h2>
         <p className="text-lg text-[#ffe5e5] mb-8 text-center">
-          We currently service East and South Auckland. Check if we're available
-          in your area!
+          We currently service East and South Auckland.
         </p>
 
         <div className={styles.formContainer}>
           <h3 className="text-2xl font-bold mb-4 text-white text-center">
-            Check Your Address
+            Check If We Service Your Address
           </h3>
           <form onSubmit={handleSubmit} className={styles.interestForm}>
             <input
@@ -125,7 +127,10 @@ export const ServiceAreas: React.FC = () => {
               className={styles.inputField}
             />
             <Button
-              type="submit"
+              type={isInServiceArea === false ? "button" : "submit"}
+              onClick={
+                isInServiceArea === false ? handleRegisterInterest : undefined
+              }
               className={`${styles.submitButton} ${
                 isInServiceArea === true
                   ? "bg-green-600"

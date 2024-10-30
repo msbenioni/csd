@@ -38,7 +38,7 @@ export async function GET(request: Request) {
     console.log("Found slots:", slots);
 
     if (format === "calendar") {
-      const formattedSlots = slots.map((slot) => {
+      const formattedSlots = slots.map((slot: TimeSlot) => {
         const startDateTime = getStartDate(slot);
         return {
           id: slot.id,
