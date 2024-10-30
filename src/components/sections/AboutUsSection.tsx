@@ -9,21 +9,22 @@ export const AboutUsSection: FC = () => {
         </h2>
         <div className="max-w-3xl mx-auto p-8 bg-white rounded-3xl shadow-xl">
           <p className="mb-6 text-xl font-medium text-[#555555] leading-relaxed">
-            Living in a multi-generational home (with more people in our house
-            than we had bedrooms for due to high rental prices), we quickly
-            found ourselves drowning in extra rubbish that didn’t fit in the
-            council bins, no matter how much we recycled or reused. We also
-            noticed we were not the only ones with this problem, as some folks
-            were turning to sneaky roadside dumping for their extra bags.
+            Living in a multi-generational home in Auckland with more people
+            than bedrooms (because rent is higher than our hopes & dreams), we
+            end up with extra rubbish faster than you can say “whats for dinner,
+            mum?”. And by rubbish day, there’s no way it all fits in the bins, despite
+            our best recycling efforts. Looking around the neighbourhood we noticed we’re not alone, others are
+            struggling too—some even resort to a cheeky roadside dump for their
+            overflow!
           </p>
           <p className="mb-6 text-xl font-medium text-[#555555] leading-relaxed">
-            Thats when{" "}
-            <span className="font-bold text-[#ffc107]">Clean Sweep Duo</span>{" "}
-            was born! We are a mother-daughter team with a mission: to make
-            rubbish removal simple, affordable, and, dare we say, a bit
-            friendlier. We may only have a small car to start this mission, but
-            we have a big goal – to help others clear out their home clutter and
-            keep the streets clean — one bag at a time!
+            Enter the{" "}
+            <span className="font-bold text-[#ffc107]">Clean Sweep Duo!</span>{" "}
+            We&apos;re a mother-daughter team with a mission to make rubbish
+            removal easy, affordable, and yes—surprisingly friendly! With our
+            little car and big dreams, we&apos;re here to help others clear
+            their spaces and keep our streets just a little bit cleaner than
+            before! 
           </p>
         </div>
       </div>

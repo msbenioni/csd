@@ -132,7 +132,7 @@ export const ServiceAreas: React.FC = () => {
                 isInServiceArea === false ? handleRegisterInterest : undefined
               }
               className={`
-                w-full py-6 text-lg font-bold transition-all
+                w-full py-6 text-lg font-bold transition-all text-white
                 ${
                   isInServiceArea === true
                     ? "bg-green-600 hover:bg-green-700"

@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import animate from "tailwindcss-animate";
 
 const config: Config = {
   content: [
@@ -56,11 +57,11 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))",
         },
         toast: {
-          success: 'rgb(34 197 94)',
-          error: 'rgb(239 68 68)',
-          info: 'rgb(59 130 246)',
-          warning: 'rgb(234 179 8)',
-        }
+          success: "rgb(34 197 94)",
+          error: "rgb(239 68 68)",
+          info: "rgb(59 130 246)",
+          warning: "rgb(234 179 8)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -83,7 +84,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [animate],
 };
 
 export default config;
