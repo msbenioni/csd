@@ -129,16 +129,22 @@ export function DynamicCalendar({ isAdmin, onConfirm }: DynamicCalendarProps) {
             endAccessor="end"
             selectable
             selected={selectedDate}
-            onSelectSlot={(slotInfo) => {
-              const clickDate = new Date(slotInfo.start);
-              clickDate.setHours(0, 0, 0, 0);
-              setSelectedDate(clickDate);
-            }}
-            onNavigate={(date) => {
-              setCurrentMonth(date);
-              const newDate = new Date(date);
-              newDate.setHours(0, 0, 0, 0);
-              setSelectedDate(newDate);
+            dayPropGetter={(date) => {
+              const today = new Date();
+              // Reset hours to start of day for comparison
+              today.setHours(0, 0, 0, 0);
+              date.setHours(0, 0, 0, 0);
+              
+              if (date.getTime() < today.getTime()) {
+                return {
+                  style: {
+                    backgroundColor: '#e5e7eb',
+                    cursor: 'not-allowed',
+                    color: '#9ca3af'
+                  }
+                };
+              }
+              return {};
             }}
             view="month"
             date={currentMonth}
@@ -162,7 +168,7 @@ export function DynamicCalendar({ isAdmin, onConfirm }: DynamicCalendarProps) {
         {selectedDate && selectedTime && (
           <Button
             onClick={handleConfirm}
-            className="mt-4 w-full bg-gradient-to-r from-secondary to-primary hover:from-secondary/90 hover:to-primary/90 text-white py-6 text-xl font-semibold transition-all"
+            className="mt-4 w-full bg-yellow-500 hover:bg-yellow-600 text-white py-6 text-xl font-semibold transition-all"
           >
             Confirm Date & Time Selected
           </Button>

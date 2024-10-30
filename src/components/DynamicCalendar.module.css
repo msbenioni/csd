@@ -5,6 +5,7 @@
   min-height: 100vh;
   max-width: 800px;
   margin: 0 auto;
+  border-radius: 0.5rem;
 }
 
 .calendarWrapper {
