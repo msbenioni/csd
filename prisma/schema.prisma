@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -45,4 +45,13 @@ model TimeSlot {
   available Boolean  @default(true)
 
   @@unique([date, time])
+}
+
+model Interest {
+  id        String   @id @default(cuid())
+  email     String
+  address   String
+  suburb    String
+  postcode  String
+  createdAt DateTime @default(now())
 }
