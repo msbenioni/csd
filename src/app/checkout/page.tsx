@@ -2,6 +2,7 @@
 
 import { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
+import { loadStripe } from '@stripe/stripe-js';
 
 interface CheckoutFormData {
   serviceDetails: {
@@ -19,6 +20,12 @@ interface CheckoutFormData {
     email: string;
     phone: string;
   };
+  pricing: {
+    pricePerBag: number;
+    subtotal: number;
+    tax: number;
+    total: number;
+  };
 }
 
 // Optional: Create a separate type for available time slots
@@ -26,6 +33,9 @@ type TimeSlot = {
   id: string;
   time: string;
 };
+
+// Initialize Stripe
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -46,6 +56,12 @@ export default function CheckoutPage() {
       email: "",
       phone: "",
     },
+    pricing: {
+      pricePerBag: 25.00, // Set your price per bag
+      subtotal: 25.00,
+      tax: 2.50,
+      total: 27.50
+    }
   });
 
   // Example time slots - you might want to move these to a configuration file
@@ -78,6 +94,33 @@ export default function CheckoutPage() {
         numberOfBags: parseInt(e.target.value),
       },
     }));
+  };
+
+  const handlePayment = async () => {
+    try {
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const session = await response.json();
+      
+      const stripe = await stripePromise;
+      const result = await stripe?.redirectToCheckout({
+        sessionId: session.id,
+      });
+
+      if (result?.error) {
+        console.error(result.error);
+        // Handle error here
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+      // Handle error here
+    }
   };
 
   return (
@@ -230,7 +273,77 @@ export default function CheckoutPage() {
           {currentStep === 2 && (
             <div>Customer Information Form (Coming Soon)</div>
           )}
-          {currentStep === 3 && <div>Review & Payment (Coming Soon)</div>}
+          {currentStep === 3 && (
+            <div className="space-y-6">
+              <h2 className="text-2xl font-semibold mb-6">Review & Payment</h2>
+
+              {/* Order Summary */}
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h3 className="text-lg font-medium mb-4">Order Summary</h3>
+                
+                {/* Service Details */}
+                <div className="space-y-3 mb-6">
+                  <div className="flex justify-between">
+                    <span>Number of Bags:</span>
+                    <span>{formData.serviceDetails.numberOfBags}</span>
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    <p className="font-medium">Pickup Address:</p>
+                    <p>{formData.serviceDetails.pickupAddress.street}</p>
+                    <p>{formData.serviceDetails.pickupAddress.suburb}, {formData.serviceDetails.pickupAddress.postcode}</p>
+                  </div>
+                </div>
+
+                {/* Customer Details */}
+                <div className="space-y-2 mb-6">
+                  <p className="font-medium">Customer Details:</p>
+                  <p>{formData.customerInfo.firstName} {formData.customerInfo.lastName}</p>
+                  <p>{formData.customerInfo.email}</p>
+                  <p>{formData.customerInfo.phone}</p>
+                </div>
+
+                {/* Pricing Breakdown */}
+                <div className="border-t pt-4 space-y-2">
+                  <div className="flex justify-between">
+                    <span>Subtotal</span>
+                    <span>${formData.pricing.subtotal.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Tax</span>
+                    <span>${formData.pricing.tax.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between font-semibold text-lg border-t pt-2">
+                    <span>Total</span>
+                    <span>${formData.pricing.total.toFixed(2)}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Payment Section */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Payment</h3>
+                <p className="text-sm text-gray-600">
+                  You will be redirected to Stripe to complete your payment securely.
+                </p>
+              </div>
+
+              {/* Navigation Buttons */}
+              <div className="flex justify-between mt-8">
+                <button
+                  onClick={() => setCurrentStep(2)}
+                  className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
+                >
+                  Back
+                </button>
+                <button
+                  onClick={handlePayment}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Pay Now
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
