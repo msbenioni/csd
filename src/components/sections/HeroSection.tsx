@@ -48,8 +48,8 @@ export const HeroSection: FC = () => {
             <Image
               src="/images/duo-car.png"
               alt="Kawaii-style duo car"
-              width={500}
-              height={300}
+              width={600}
+              height={600}
               priority
               className="mx-auto w-auto h-auto rounded-full relative z-10 transform hover:scale-110 transition-transform duration-300"
             />

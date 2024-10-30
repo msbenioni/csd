@@ -41,7 +41,8 @@ export function Header() {
                 src="/images/duologo.png"
                 alt="Clean Sweep Duo Logo"
                 width={isScrolled ? 170 : 150}
-                height={isScrolled ? 60 : 50}
+                height={isScrolled ? 170 : 150}
+                style={{ height: "auto" }}
                 priority
               />
             </motion.div>
