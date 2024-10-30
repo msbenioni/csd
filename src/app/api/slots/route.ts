@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
+import { Prisma, TimeSlot } from "@prisma/client";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -64,14 +64,15 @@ export async function GET(request: Request) {
     return NextResponse.json(slots);
   } catch (error) {
     console.error("Detailed error in slots route:", error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     return NextResponse.json(
-      { error: "Failed to fetch slots", details: error.message },
+      { error: "Failed to fetch slots", details: errorMessage },
       { status: 500 }
     );
   }
 }
 
-function getStartDate(slot: any) {
+function getStartDate(slot: TimeSlot) {
   const startDate = new Date(slot.date);
   const [hours, minutes] = (slot.time || "00:00").split(":").map(Number);
   startDate.setHours(hours || 0, minutes || 0);
@@ -86,11 +87,11 @@ function getEndDate(startDate: Date) {
 
 function generateDefaultTimeSlots(date: Date) {
   const slots = [];
-  const startHour = 7; // 7 AM
-  const endHour = 16; // 4 PM
+  const startHour = 7;
+  const endHour = 16;
 
   for (let hour = startHour; hour < endHour; hour++) {
-    for (let minutes of [0, 30]) {
+    for (const minutes of [0, 30]) {
       const slotDate = new Date(date);
       slotDate.setHours(hour, minutes, 0, 0);
 

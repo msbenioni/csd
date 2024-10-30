@@ -23,23 +23,33 @@ export async function fetchTimeSlots(
     if (date) params.append("date", date);
     if (format) params.append("format", format);
 
-    const response = await fetch(`/api/slots?${params}`);
+    const url = `/api/slots?${params}`;
+    console.log('Fetching from URL:', url);
+
+    const response = await fetch(url);
+    console.log('Response status:', response.status);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
     const data = await response.json();
+    console.log('Received data:', data);
     
-    // If format is calendar, return the events object
     if (format === "calendar") {
-      return { events: data.events };
+      return { events: data.events || [] };
     }
     
-    // For raw format, return the array of time slots
+    if (!Array.isArray(data)) {
+      console.error('Expected array of slots but received:', data);
+      return [];
+    }
+    
     return data.map((slot: any) => ({
-      ...slot,
-      date: new Date(slot.date)
+      id: slot.id || crypto.randomUUID(),
+      date: new Date(slot.date),
+      time: slot.time,
+      available: slot.available ?? true
     }));
   } catch (error) {
     console.error("Error fetching time slots:", error);

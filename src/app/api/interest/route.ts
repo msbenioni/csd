@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Interest registration error:", error);
     return NextResponse.json(
-      { error: error.message || "Failed to register interest" },
+      { error: (error as Error).message || "Failed to register interest" },
       { status: 500 }
     );
   }
