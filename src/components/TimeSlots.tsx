@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import moment from "moment";
 import { Button } from "@/components/ui/button";
 import { Slot } from "@/app/api/types/slots";
-import "./TimeSlots.css";
+import styles from "./TimeSlots.module.css";
 
 interface TimeSlotsProps {
   date: Date;
@@ -28,13 +28,15 @@ export function TimeSlots({
   const isDateSelected = moment(date).isSame(selectedDate, "day");
 
   return (
-    <div>
+    <div className={styles.container}>
       <h3
-        className={`text-lg text-center p-4 rounded-lg ${isDateSelected ? "bg-primary text-white" : ""}`}
+        className={`text-lg text-center p-4 rounded-lg ${
+          isDateSelected ? "bg-primary text-white" : ""
+        }`}
       >
         Select a time for {moment(date).format("MMMM D, YYYY")}
       </h3>
-      <div className="grid grid-cols-4 gap-2 p-4">
+      <div className={styles.grid}>
         {availableSlots.map((slot) => (
           <Button
             key={slot.getTime()}

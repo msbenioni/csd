@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import styles from "./ServiceAreas.module.css";
 import { useRouter } from "next/navigation";
+import styles from "./ServiceAreas.module.css";
 
 interface InterestFormData {
   email: string;
@@ -74,8 +74,8 @@ export const ServiceAreas: React.FC = () => {
   };
 
   return (
-    <section className={styles.serviceAreasSection}>
-      <div className={styles.container}>
+    <section className={`${styles.section} py-16 px-4`}>
+      <div className={`${styles.container} px-4`}>
         <h2 className="text-4xl font-extrabold mb-6 text-center text-white">
           Service Areas
         </h2>
@@ -83,11 +83,11 @@ export const ServiceAreas: React.FC = () => {
           We currently service East and South Auckland.
         </p>
 
-        <div className={styles.formContainer}>
+        <div className={`${styles.formContainer} p-8 rounded-lg`}>
           <h3 className="text-2xl font-bold mb-4 text-white text-center">
             Check If We Service Your Address
           </h3>
-          <form onSubmit={handleSubmit} className={styles.interestForm}>
+          <form onSubmit={handleSubmit} className={styles.form}>
             <input
               type="text"
               name="address"
@@ -95,7 +95,7 @@ export const ServiceAreas: React.FC = () => {
               value={interestForm.address}
               onChange={handleInputChange}
               required
-              className={styles.inputField}
+              className={styles.input}
             />
             <input
               type="text"
@@ -104,7 +104,7 @@ export const ServiceAreas: React.FC = () => {
               value={interestForm.suburb}
               onChange={handleInputChange}
               required
-              className={styles.inputField}
+              className={styles.input}
             />
             <input
               type="text"
@@ -115,7 +115,7 @@ export const ServiceAreas: React.FC = () => {
               required
               pattern="[0-9]{4}"
               title="Please enter a valid 4-digit postcode"
-              className={styles.inputField}
+              className={styles.input}
             />
             <input
               type="email"
@@ -124,20 +124,23 @@ export const ServiceAreas: React.FC = () => {
               value={interestForm.email}
               onChange={handleInputChange}
               required
-              className={styles.inputField}
+              className={styles.input}
             />
             <Button
               type={isInServiceArea === false ? "button" : "submit"}
               onClick={
                 isInServiceArea === false ? handleRegisterInterest : undefined
               }
-              className={`${styles.submitButton} ${
-                isInServiceArea === true
-                  ? "bg-green-600"
-                  : isInServiceArea === false
-                  ? "bg-blue-600"
-                  : ""
-              }`}
+              className={`
+                w-full py-6 text-lg font-bold transition-all
+                ${
+                  isInServiceArea === true
+                    ? "bg-green-600 hover:bg-green-700"
+                    : isInServiceArea === false
+                    ? "bg-blue-600 hover:bg-blue-700"
+                    : "bg-primary hover:bg-primary/90"
+                }
+              `}
             >
               {isInServiceArea === null
                 ? "Check Availability"
@@ -148,9 +151,10 @@ export const ServiceAreas: React.FC = () => {
           </form>
           {message && (
             <p
-              className={`mt-4 text-center ${
-                isInServiceArea ? "text-green-400" : "text-yellow-400"
-              }`}
+              className={`
+              mt-4 text-center
+              ${isInServiceArea ? "text-green-400" : "text-yellow-400"}
+            `}
             >
               {message}
             </p>

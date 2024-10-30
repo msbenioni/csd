@@ -1,7 +1,5 @@
-.serviceAreasSection {
-  padding: 4rem 1rem;
-  background: linear-gradient(135deg, #8B1E3F, #1f2a44);
-  color: #ffffff;
+.section {
+  background: linear-gradient(to bottom right, #8b1e3f, #1f2a44);
 }
 
 .container {
@@ -10,13 +8,11 @@
 }
 
 .formContainer {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 2rem;
-  border-radius: 8px;
-  backdrop-filter: blur(10px);
+  background-color: rgb(255 255 255 / 0.1);
+  backdrop-filter: blur(12px);
 }
 
-.interestForm {
+.form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -24,32 +20,22 @@
   margin: 0 auto;
 }
 
-.inputField {
+.input {
   padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: 0.25rem;
+  background-color: rgb(255 255 255 / 0.1);
   color: white;
   font-size: 1rem;
+  transition: all 200ms;
 }
 
-.inputField::placeholder {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.inputField:focus {
+.input:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.15);
+  border-color: rgb(255 255 255 / 0.5);
+  background-color: rgb(255 255 255 / 0.15);
 }
 
-.submitButton {
-  padding: 0.75rem;
-  font-weight: bold;
-  transition: all 0.3s ease;
-}
-
-.submitButton:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.input::placeholder {
+  color: rgb(255 255 255 / 0.6);
 }

@@ -5,8 +5,8 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { TimeSlots } from "./TimeSlots";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import styles from "./DynamicCalendar.module.css";
 import { Slot } from '../app/api/types/slots';
+import styles from "./DynamicCalendar.module.css";
 
 const localizer = momentLocalizer(moment);
 
@@ -91,16 +91,16 @@ export function DynamicCalendar({ isAdmin, onConfirm }: DynamicCalendarProps) {
   };
 
   return (
-    <div className={styles.pageWrapper}>
-      <div className={`${styles.calendarWrapper} pt-24`}>
+    <div className={`${styles.pageWrapper} bg-gradient-to-br from-[#8b1e3f] to-[#1f2a44] p-5`}>
+      <div className={`${styles.calendarWrapper} bg-white/10 p-8 rounded-lg`}>
         <div className={styles.controlsContainer}>
           <Button
             onClick={handleCurrentMonth}
-            className={`${styles.button} ${
+            className={`transition-all ${
               currentMonth.getMonth() === new Date().getMonth() &&
               currentMonth.getFullYear() === new Date().getFullYear()
                 ? "opacity-50 cursor-not-allowed"
-                : "bg-primary text-white hover:bg-primary/90"
+                : "bg-primary hover:bg-primary/90 text-white"
             }`}
           >
             Current Month
@@ -110,11 +110,11 @@ export function DynamicCalendar({ isAdmin, onConfirm }: DynamicCalendarProps) {
           </h2>
           <Button
             onClick={handleNextMonth}
-            className={`${styles.button} ${
+            className={`transition-all ${
               currentMonth.getMonth() === new Date().getMonth() + 1 &&
               currentMonth.getFullYear() === new Date().getFullYear()
                 ? "opacity-50 cursor-not-allowed"
-                : "bg-primary text-white hover:bg-primary/90"
+                : "bg-primary hover:bg-primary/90 text-white"
             }`}
           >
             Next Month
@@ -155,14 +155,14 @@ export function DynamicCalendar({ isAdmin, onConfirm }: DynamicCalendarProps) {
             date={selectedDate}
             slots={slots}
             onSelectTime={(time) => setSelectedTime(time)}
-            selectedDate={selectedDate} // Pass the selected date
+            selectedDate={selectedDate}
           />
         )}
 
         {selectedDate && selectedTime && (
           <Button
             onClick={handleConfirm}
-            className="mt-4 bg-gradient-to-r from-[#FFD700] to-[#FF4500] hover:from-[#FF4500]/90 hover:to-[#ffd700]/90 text-white py-6 px-8 text-xl font-semibold transition-all"
+            className="mt-4 w-full bg-gradient-to-r from-secondary to-primary hover:from-secondary/90 hover:to-primary/90 text-white py-6 text-xl font-semibold transition-all"
           >
             Confirm Date & Time Selected
           </Button>

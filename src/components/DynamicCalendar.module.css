@@ -1,31 +1,18 @@
 .pageWrapper {
-  background: linear-gradient(135deg, #ff8a65, #ff4081);
-  min-height: 100vh;
-  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
   max-width: 800px;
   margin: 0 auto;
-  border-radius: 15px;
 }
 
 .calendarWrapper {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  background: rgba(
-    255,
-    255,
-    255,
-    0.15
-  ); /* Light transparency for glassmorphism */
-  backdrop-filter: blur(10px);
-  padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 800px;
+  backdrop-filter: blur(12px);
 }
 
 .controlsContainer {
@@ -36,46 +23,36 @@
 }
 
 .calendarContainer {
-  height: 500px;
-  border-radius: 10px;
+  background-color: white;
+  border-radius: 0.5rem;
   overflow: hidden;
 }
 
-.button {
-  transition: transform 0.2s, background-color 0.2s;
+/* Calendar overrides - these need to stay in CSS */
+.calendarContainer :global(.rbc-calendar) {
+  background-color: white;
 }
 
-.button:hover {
-  transform: scale(1.05);
-}
-
-.message {
-  font-size: 0.875rem;
-  color: #4caf50;
-}
-
-/* Style for calendar date cells */
 .calendarContainer :global(.rbc-date-cell) {
-  cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 0.8rem;
+  transition: all 200ms;
 }
 
-/* Hover effect for date cells */
 .calendarContainer :global(.rbc-date-cell:hover) {
-  background-color: hsl(var(--color-primary-bg));
-  color: hsl(var(--color-primary-text));
-  border-radius: 5px;
+  background-color: rgb(24 54 143 / 0.1);
+  border-radius: 0.25rem;
 }
 
-/* Style for selected date */
-.calendarContainer :global(.rbc-selected-cell) {
-  background-color: hsl(var(--color-primary-bg)) !important;
-  color: hsl(var(--color-primary-text)) !important;
-  border-radius: 5px;
-}
-
-/* Style for today's cell */
 .calendarContainer :global(.rbc-today) {
-  background-color: hsl(var(--color-primary-bg));
-  color: hsl(var(--color-primary-text));
+  background-color: rgb(24 54 143 / 0.1);
+}
+
+.calendarContainer :global(.rbc-off-range-bg) {
+  background-color: rgb(0 0 0 / 0.05);
+}
+
+.calendarContainer :global(.rbc-header) {
+  padding: 0.625rem;
+  font-weight: 700;
+  background-color: rgb(0 0 0 / 0.05);
 }
