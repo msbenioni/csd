@@ -1,4 +1,4 @@
-interface TimeSlot {
+export interface TimeSlot {
   id: string;
   date: Date;
   time: string;
@@ -12,6 +12,13 @@ interface CalendarEvent {
   end: Date;
   allDay: boolean;
   isUnavailable: boolean;
+}
+
+interface RawTimeSlot {
+  id?: string;
+  date: string;
+  time: string;
+  available?: boolean;
 }
 
 export async function fetchTimeSlots(
@@ -45,7 +52,7 @@ export async function fetchTimeSlots(
       return [];
     }
     
-    return data.map((slot: any) => ({
+    return data.map((slot: RawTimeSlot) => ({
       id: slot.id || crypto.randomUUID(),
       date: new Date(slot.date),
       time: slot.time,

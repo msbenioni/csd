@@ -6,18 +6,9 @@ import { TimeSlots } from "./TimeSlots";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import styles from "./DynamicCalendar.module.css";
+import { Slot } from '../app/api/types/slots';
 
 const localizer = momentLocalizer(moment);
-
-interface Slot {
-  id: string;
-  date: Date;
-  time: string;
-  available: boolean;
-  start: Date;
-  end: Date;
-  title?: string;
-}
 
 interface DynamicCalendarProps {
   isAdmin: boolean;
@@ -44,7 +35,7 @@ export function DynamicCalendar({ isAdmin, onConfirm }: DynamicCalendarProps) {
       // Check if data is an array, if not, use the correct property or empty array
       const slotsArray = Array.isArray(data) ? data : (data.slots || []);
       
-      const formattedSlots = slotsArray.map((slot) => ({
+      const formattedSlots = slotsArray.map((slot: Slot) => ({
         id: slot.id,
         date: new Date(slot.date),
         time: slot.time,
@@ -138,9 +129,8 @@ export function DynamicCalendar({ isAdmin, onConfirm }: DynamicCalendarProps) {
             endAccessor="end"
             selectable
             selected={selectedDate}
-            onClick={(event) => {
-              if (typeof event === "string") return;
-              const clickDate = new Date(event);
+            onSelectSlot={(slotInfo) => {
+              const clickDate = new Date(slotInfo.start);
               clickDate.setHours(0, 0, 0, 0);
               setSelectedDate(clickDate);
             }}

@@ -1,21 +1,14 @@
 import React, { useState } from "react";
 import moment from "moment";
 import { Button } from "@/components/ui/button";
+import { Slot } from "@/app/api/types/slots";
 import "./TimeSlots.css";
-
-interface Slot {
-  id: string;
-  start: Date;
-  end: Date;
-  title: string;
-  isUnavailable?: boolean;
-}
 
 interface TimeSlotsProps {
   date: Date;
   slots: Slot[];
   onSelectTime: (time: Date) => void;
-  selectedDate: Date; // New prop for selected date
+  selectedDate: Date;
 }
 
 export function TimeSlots({

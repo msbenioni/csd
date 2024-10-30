@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { Prisma, TimeSlot } from "@prisma/client";
+import { Prisma, TimeSlot, SortOrder } from "@prisma/client";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -29,7 +29,7 @@ export async function GET(request: Request) {
             },
           }
         : {},
-      orderBy: [{ date: Prisma.SortOrder.asc }, { time: Prisma.SortOrder.asc }],
+      orderBy: [{ date: SortOrder.asc }, { time: SortOrder.asc }],
     };
 
     console.log("Executing query with params:", baseQuery);
