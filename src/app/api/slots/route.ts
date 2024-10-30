@@ -5,47 +5,75 @@ import { Prisma } from "@prisma/client";
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const date = url.searchParams.get("date");
-  const format = url.searchParams.get("format"); // 'calendar' or 'raw'
+  const format = url.searchParams.get("format");
+
+  console.log("Received request for date:", date, "format:", format);
 
   try {
+    // Create a date range for the selected date (midnight to midnight)
+    let startDate, endDate;
+    if (date) {
+      startDate = new Date(date);
+      startDate.setHours(0, 0, 0, 0);
+
+      endDate = new Date(date);
+      endDate.setHours(23, 59, 59, 999);
+    }
+
     const baseQuery = {
-      where: {
-        available: true,
-        ...(date && { date: new Date(date) }),
-      },
-      orderBy: {
-        date: Prisma.SortOrder.asc
-      },
+      where: date
+        ? {
+            date: {
+              gte: startDate,
+              lte: endDate,
+            },
+          }
+        : {},
+      orderBy: [{ date: Prisma.SortOrder.asc }, { time: Prisma.SortOrder.asc }],
     };
 
-    const slots = await prisma.timeSlot.findMany(baseQuery);
+    console.log("Executing query with params:", baseQuery);
 
-    // Return calendar format if requested
-    if (format === 'calendar') {
-      const formattedSlots = slots.map(slot => ({
-        id: slot.id,
-        title: `Available at ${slot.time}`,
-        start: getStartDate(slot),
-        end: getEndDate(getStartDate(slot)),
-        allDay: false
-      }));
+    const slots = await prisma.timeSlot.findMany(baseQuery);
+    console.log("Found slots:", slots);
+
+    if (format === "calendar") {
+      const formattedSlots = slots.map((slot) => {
+        const startDateTime = getStartDate(slot);
+        return {
+          id: slot.id,
+          title: `Available at ${slot.time}`,
+          start: startDateTime,
+          end: getEndDate(startDateTime),
+          allDay: false,
+          isUnavailable: !slot.available,
+        };
+      });
+      console.log("Returning calendar format:", formattedSlots);
       return NextResponse.json({ events: formattedSlots });
     }
 
-    // Return raw format
+    // Generate default time slots if none exist for the date
+    if (date && slots.length === 0) {
+      const defaultSlots = generateDefaultTimeSlots(new Date(date));
+      console.log("Generated default slots:", defaultSlots);
+      return NextResponse.json(defaultSlots);
+    }
+
+    console.log("Returning raw format:", slots);
     return NextResponse.json(slots);
   } catch (error) {
-    console.error("Failed to fetch slots:", error);
+    console.error("Detailed error in slots route:", error);
     return NextResponse.json(
-      { error: "Failed to fetch slots" },
+      { error: "Failed to fetch slots", details: error.message },
       { status: 500 }
     );
   }
 }
 
-function getStartDate(slot: any) {  // Define proper TimeSlot type
+function getStartDate(slot: any) {
   const startDate = new Date(slot.date);
-  const [hours, minutes] = (slot.time || "00:00").split(':').map(Number);
+  const [hours, minutes] = (slot.time || "00:00").split(":").map(Number);
   startDate.setHours(hours || 0, minutes || 0);
   return startDate;
 }
@@ -54,4 +82,28 @@ function getEndDate(startDate: Date) {
   const endDate = new Date(startDate);
   endDate.setHours(startDate.getHours() + 1);
   return endDate;
+}
+
+function generateDefaultTimeSlots(date: Date) {
+  const slots = [];
+  const startHour = 7; // 7 AM
+  const endHour = 16; // 4 PM
+
+  for (let hour = startHour; hour < endHour; hour++) {
+    for (let minutes of [0, 30]) {
+      const slotDate = new Date(date);
+      slotDate.setHours(hour, minutes, 0, 0);
+
+      slots.push({
+        id: `default-${slotDate.getTime()}`,
+        date: slotDate,
+        time: `${hour.toString().padStart(2, "0")}:${minutes
+          .toString()
+          .padStart(2, "0")}`,
+        available: true,
+      });
+    }
+  }
+
+  return slots;
 }
