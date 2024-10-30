@@ -20,6 +20,12 @@ export function TimeSlots({
   const [selectedTime, setSelectedTime] = useState<Date | null>(null);
   const availableSlots = generateAvailableSlots(date, slots);
 
+  // Filter out past times if the selected date is today
+  const filteredSlots = availableSlots.filter(slot => {
+    if (!moment(date).isSame(new Date(), 'day')) return true;
+    return moment(slot).isAfter(moment());
+  });
+
   const handleSelectTime = (time: Date) => {
     setSelectedTime(time);
     onSelectTime(time);
@@ -37,7 +43,7 @@ export function TimeSlots({
         Select a time for {moment(date).format("MMMM D, YYYY")}
       </h3>
       <div className={styles.grid}>
-        {availableSlots.map((slot) => (
+        {filteredSlots.map((slot) => (
           <Button
             key={slot.getTime()}
             onClick={() => handleSelectTime(slot)}
@@ -55,7 +61,6 @@ export function TimeSlots({
     </div>
   );
 }
-
 function generateAvailableSlots(date: Date, bookedSlots: Slot[]): Date[] {
   const startTime = moment(date).hour(7).minute(0);
   const endTime = moment(date).hour(16).minute(0);
@@ -79,3 +84,4 @@ function generateAvailableSlots(date: Date, bookedSlots: Slot[]): Date[] {
 
   return slots;
 }
+
