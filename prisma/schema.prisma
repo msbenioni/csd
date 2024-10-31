@@ -17,13 +17,35 @@ model Booking {
   numberOfBags   Int
   location       String
   autoDeduct     Boolean    @default(false)
-  status         String     @default("pending") // "pending", "confirmed", "completed", "cancelled"
+  status         BookingStatus @default(PENDING) // Changed to enum
   totalAmount    Float
-  paymentStatus  String     @default("pending") // "pending", "paid", "refunded"
+  paymentStatus  PaymentStatus @default(PENDING) // Changed to enum
   paymentId      String?    // Stripe payment intent ID
-  customerId     String     // Related to the Customer model
+  stripeSessionId String?   @unique  // Added for Stripe checkout session
+  customerId     String     
   customer       Customer   @relation(fields: [customerId], references: [id])
   subscriptionId String?    // For recurring bookings
+  pickupInstructions String? // Added for special instructions
+  metadata       Json?      // Added for additional Stripe metadata
+}
+
+// Added enums for better type safety
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  PICKED_UP
+  IN_PROGRESS
+  READY_FOR_DELIVERY
+  DELIVERED
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
 }
 
 model Customer {
