@@ -17,7 +17,7 @@ interface DynamicCalendarProps {
 
 export function DynamicCalendar({ isAdmin, onConfirm }: DynamicCalendarProps) {
   const [slots, setSlots] = useState<Slot[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<Date | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [message, setMessage] = useState<string>("");
@@ -52,8 +52,17 @@ export function DynamicCalendar({ isAdmin, onConfirm }: DynamicCalendarProps) {
   };
 
   const handleSelectSlot = (slotInfo: { start: Date; end: Date }) => {
-    setSelectedDate(slotInfo.start);
-    setSelectedTime(null);
+    const clickDate = new Date(slotInfo.start);
+    const today = new Date();
+    // Reset hours to start of day for both dates
+    clickDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    
+    // Only allow selection if date is today or in the future
+    if (clickDate.getTime() >= today.getTime()) {
+      setSelectedDate(clickDate);
+      setSelectedTime(null);
+    }
   };
 
   const handleCurrentMonth = () => {
