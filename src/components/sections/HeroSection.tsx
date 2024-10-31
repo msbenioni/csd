@@ -30,7 +30,7 @@ export const HeroSection: FC = () => {
           <div className="flex gap-4 justify-center mt-6">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold px-8 py-4 rounded-full shadow-lg transform hover:scale-105 transition duration-300"
+              className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold px-12 py-6 text-2xl rounded-full shadow-lg transform hover:scale-105 transition duration-300"
               asChild
             >
               <a href="#how-it-works">Learn More</a>
