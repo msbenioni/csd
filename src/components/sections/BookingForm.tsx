@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 // Initialize Stripe (replace with your publishable key)
 const stripePromise = loadStripe(
@@ -176,18 +178,49 @@ const BookingForm = () => {
           {/* Progress Bar */}
           <div className="mb-8">
             <div className="flex justify-between">
-              <span className={`step ${step >= 1 ? "active" : ""}`}>
-                Personal Details
-              </span>
-              <span className={`step ${step >= 2 ? "active" : ""}`}>
-                Address
-              </span>
-              <span className={`step ${step >= 3 ? "active" : ""}`}>
-                Pickup Details
-              </span>
-              <span className={`step ${step >= 4 ? "active" : ""}`}>
-                Review & Pay
-              </span>
+              <div className="flex items-center">
+                {step > 1 ? (
+                  <span className="text-green-500 mr-2">
+                    <FontAwesomeIcon icon={faCheck} />
+                  </span>
+                ) : null}
+                <span className={`${step === 1 ? 'text-blue-600 font-bold' : 'text-gray-600'}`}>
+                  Personal Details
+                </span>
+              </div>
+
+              <div className="flex items-center">
+                {step > 2 ? (
+                  <span className="text-green-500 mr-2">
+                    <FontAwesomeIcon icon={faCheck} />
+                  </span>
+                ) : null}
+                <span className={`${step === 2 ? 'text-blue-600 font-bold' : 'text-gray-600'}`}>
+                  Address
+                </span>
+              </div>
+
+              <div className="flex items-center">
+                {step > 3 ? (
+                  <span className="text-green-500 mr-2">
+                    <FontAwesomeIcon icon={faCheck} />
+                  </span>
+                ) : null}
+                <span className={`${step === 3 ? 'text-blue-600 font-bold' : 'text-gray-600'}`}>
+                  Pickup Details
+                </span>
+              </div>
+
+              <div className="flex items-center">
+                {step > 4 ? (
+                  <span className="text-green-500 mr-2">
+                    <FontAwesomeIcon icon={faCheck} />
+                  </span>
+                ) : null}
+                <span className={`${step === 4 ? 'text-blue-600 font-bold' : 'text-gray-600'}`}>
+                  Review & Pay
+                </span>
+              </div>
             </div>
           </div>
 

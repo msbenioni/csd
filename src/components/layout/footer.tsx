@@ -3,7 +3,7 @@
 export default function Footer() {
   return (
     <footer className="bg-[#1f2a44] text-white py-10">
-      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Business Information */}
         <div>
           <h4 className="font-bold text-lg mb-2">Contact Us</h4>
@@ -49,20 +49,10 @@ export default function Footer() {
               Instagram
             </a>
           </div>
-        </div>
-
-        {/* Payment & Legal */}
-        <div>
-          <h4 className="font-bold text-lg mb-2">Service Areas</h4>
-          <div className="flex space-x-4">
-            <span>South Auckland</span>
-            <span>East Auckland</span>
-          </div>
           <p className="mt-8 text-sm text-center">
             &copy; 2024 Clean Sweep Duo. All rights reserved.
           </p>
         </div>
-
       </div>
     </footer>
   );
