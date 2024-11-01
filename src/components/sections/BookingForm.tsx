@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
+import { loadStripe } from '@stripe/stripe-js';
+
+// Initialize Stripe (replace with your publishable key)
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 interface FormData {
   streetAddress: string;
@@ -86,22 +90,32 @@ const BookingForm = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/bookings", {
+      // First create the booking
+      const bookingResponse = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
-        setMessage(
-          `Booking confirmed for ${formData.pickupDate}! Check your email for details.`
-        );
-        setStep(3);
-      } else {
-        setMessage("Error creating booking. Please try again.");
+      if (!bookingResponse.ok) {
+        throw new Error('Failed to create booking');
       }
-    } catch (_error) {
-      setMessage("Error submitting form. Please try again.");
+
+      const { sessionId } = await bookingResponse.json();
+
+      // Redirect to Stripe Checkout
+      const stripe = await stripePromise;
+      if (!stripe) throw new Error('Stripe failed to load');
+
+      const { error } = await stripe.redirectToCheckout({
+        sessionId,
+      });
+
+      if (error) {
+        setMessage(error.message);
+      }
+    } catch (error) {
+      setMessage("Error creating booking. Please try again.");
     }
 
     setLoading(false);
