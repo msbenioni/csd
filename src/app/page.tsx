@@ -1,20 +1,21 @@
-// This file will contain the main structure of your landing page
-import { HeroSection } from "@/components/sections/HeroSection";
-import { AboutUsSection } from "@/components/sections/AboutUsSection";
-import { HowItWorksSection } from "@/components/sections/HowItWorksSection";
-import { Pricing } from "@/components/sections/Pricing";
-import { Testimonials } from "@/components/sections/Testimonials";
-import { ServiceAreas } from "@/components/sections/ServiceAreas";
+import HeroSection from "@/components/sections/HeroSection";
+import Pricing from "@/components/sections/Pricing";
+import ServiceAreas from "@/components/sections/ServiceAreas";
+import BookingForm from "@/components/sections/BookingForm";
 
 export default function Home() {
   return (
-    <>
+    <main className="scroll-smooth">
       <HeroSection />
-      <AboutUsSection />
-      <HowItWorksSection />
-      <Pricing />
-      <ServiceAreas />
-      <Testimonials />
-    </>
+      <div id="pricing">
+        <Pricing />
+      </div>
+      <div id="service-areas">
+        <ServiceAreas />
+      </div>
+      <div id="booking">
+        <BookingForm />
+      </div>
+    </main>
   );
 }

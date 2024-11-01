@@ -19,11 +19,7 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navItems = [
-    { label: "Home", href: "/" },
-    { label: "Pricing", href: "/#pricing" },
-    { label: "Book Now", href: "/booking" },
-  ];
+  const navItems = [{ label: "Book Now", href: "/#booking-form" }];
 
   return (
     <header className="fixed w-full top-0 z-50 transition-all duration-300 bg-gradient-to-b from-pink-700 to-[#8B1E3F]/20 backdrop-blur-md">
@@ -49,24 +45,12 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navItems.map((item, index) =>
-              item.label === "Book Now" ? (
-                <Link key={index} href={item.href} className="w-full">
-                  <Button className="w-full text-white transition-colors duration-600">
-                    {item.label}
-                  </Button>
-                </Link>
-              ) : (
-                <Link
-                  key={index}
-                  href={item.href}
-                  className="text-white hover:text-yellow-400 transition-colors duration-600"
-                >
-                  {item.label}
-                </Link>
-              )
-            )}
+          <nav className="hidden md:flex items-center">
+            <Link href={navItems[0].href} className="w-full">
+              <Button className="w-full text-white transition-colors duration-600">
+                {navItems[0].label}
+              </Button>
+            </Link>
           </nav>
 
           {/* Mobile Menu Button */}

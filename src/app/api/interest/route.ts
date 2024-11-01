@@ -1,36 +1,22 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { email, address, suburb, postcode } = body;
-
-    // Validate input
-    if (!email || !address || !suburb || !postcode) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
-    }
-
-    console.log("Attempting to create interest with:", { email, address, suburb, postcode });
+    const { email, postcode, suburb } = await request.json();
 
     const interest = await prisma.interest.create({
       data: {
         email,
-        address,
-        suburb,
         postcode,
+        suburb,
       },
     });
 
-    console.log("Interest created:", interest);
-    return NextResponse.json(interest, { status: 201 });
+    return NextResponse.json({ success: true, data: interest });
   } catch (error) {
-    console.error("Interest registration error:", error);
     return NextResponse.json(
-      { error: (error as Error).message || "Failed to register interest" },
+      { success: false, error: "Failed to register interest" },
       { status: 500 }
     );
   }

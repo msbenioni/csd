@@ -18,3 +18,20 @@ export const TIME_SLOTS = [
   "2:00 PM - 3:00 PM",
   "3:00 PM - 4:00 PM",
 ]; 
+
+export const COLORS = {
+  background: {
+    orange: "#FF8C00",
+    pink: "#FF69B4",
+  },
+  containers: {
+    white: "#FFFFFF",
+  },
+  buttons: {
+    primary: "#0000FF",
+    success: "#00FF00",
+  },
+  accents: {
+    yellow: "#FFD700",
+  },
+};

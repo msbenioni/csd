@@ -11,7 +11,6 @@ export const metadata: Metadata = {
   title: "Clean Sweep Duo",
   description:
     "Family run rubbish removal service in South and East Auckland",
-  viewport: "width=device-width, initial-scale=1",
   icons: {
     icon: "/images/duofavicon.png",
   },

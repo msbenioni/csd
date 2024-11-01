@@ -76,7 +76,7 @@
 }
 
 .step:not(:last-child)::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 100%;
   width: 100%;
@@ -98,4 +98,98 @@
   font-weight: 500;
   color: rgb(107 114 128);
   white-space: nowrap;
-} 
+}
+
+.container-3d {
+  background: white;
+  border: 2px solid #ffd700; /* yellow border */
+  box-shadow: 3px 3px 0 #ffd700, 6px 6px 0 rgba(0, 0, 0, 0.1);
+  transform: translateX(-3px) translateY(-3px);
+  transition: all 0.2s ease;
+}
+
+.container-3d:hover {
+  transform: translateX(-1px) translateY(-1px);
+  box-shadow: 1px 1px 0 #ffd700, 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.pricing-card {
+  @apply bg-white p-8 text-center rounded-lg relative;
+  border: 2px solid #ffd700;
+  transform: translateY(-3px) translateX(-3px);
+  box-shadow: 3px 3px 0 #ffd700, 6px 6px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-1px) translateX(-1px);
+  box-shadow: 1px 1px 0 #ffd700, 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.service-area-card {
+  @apply bg-white p-8 rounded-lg text-center relative;
+  border: 2px solid #FFD700;
+  transform: translateY(-3px) translateX(-3px);
+  box-shadow: 
+    3px 3px 0 #FFD700,
+    6px 6px 0 rgba(0,0,0,0.1);
+}
+
+.input-3d {
+  @apply bg-white p-3 rounded-lg relative w-full;
+  border: 2px solid #FFD700;
+  transform: translateY(-2px) translateX(-2px);
+  box-shadow: 
+    2px 2px 0 #FFD700,
+    4px 4px 0 rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+}
+
+.input-3d:focus {
+  outline: none;
+  transform: translateY(-1px) translateX(-1px);
+  box-shadow: 
+    1px 1px 0 #FFD700,
+    2px 2px 0 rgba(0,0,0,0.1);
+}
+
+.button-3d {
+  @apply bg-blue-600 text-white p-3 rounded-lg relative;
+  border: 2px solid #FFD700;
+  transform: translateY(-2px) translateX(-2px);
+  box-shadow: 
+    2px 2px 0 #FFD700,
+    4px 4px 0 rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+}
+
+.button-3d:hover:not(:disabled) {
+  @apply bg-blue-700;
+  transform: translateY(-1px) translateX(-1px);
+  box-shadow: 
+    1px 1px 0 #FFD700,
+    2px 2px 0 rgba(0,0,0,0.1);
+}
+
+.button-3d:disabled {
+  @apply bg-gray-400 cursor-not-allowed;
+}
+
+.booking-form-card {
+  @apply bg-white p-8 rounded-lg relative;
+  border: 2px solid #FFD700;
+  transform: translateY(-3px) translateX(-3px);
+  box-shadow: 
+    3px 3px 0 #FFD700,
+    6px 6px 0 rgba(0,0,0,0.1);
+}
+
+.success-message {
+  @apply text-center p-6 rounded-lg;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

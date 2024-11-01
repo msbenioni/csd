@@ -1,166 +1,117 @@
 "use client";
 
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import styles from "./ServiceAreas.module.css";
+import { useState } from "react";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
-interface InterestFormData {
-  email: string;
-  address: string;
-  suburb: string;
-  postcode: string;
-}
+const ServiceAreas = () => {
+  const [email, setEmail] = useState("");
+  const [postcode, setPostcode] = useState("");
+  const [suburb, setSuburb] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-export const ServiceAreas: React.FC = () => {
-  const router = useRouter();
-  const [interestForm, setInterestForm] = useState<InterestFormData>({
-    email: "",
-    address: "",
-    suburb: "",
-    postcode: "",
-  });
-  const [message, setMessage] = useState<string>("");
-  const [isInServiceArea, setIsInServiceArea] = useState<boolean | null>(null);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setInterestForm({ ...interestForm, [name]: value });
-
-    // Reset service area message when postcode changes
-    if (name === "postcode") {
-      setIsInServiceArea(null);
-      setMessage("");
-    }
-  };
-
-  const checkServiceArea = (postcode: string): boolean => {
-    return postcode.startsWith("2");
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleInterestRegistration = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
-    const isServiced = checkServiceArea(interestForm.postcode);
-    setIsInServiceArea(isServiced);
-
-    if (isServiced) {
-      setMessage("Great news! We service your area. Redirecting to booking...");
-      setTimeout(() => {
-        router.push("/booking");
-      }, 1500);
-    } else {
-      setMessage(
-        "Unfortunately we do not service here, yet. Click 'Register Interest' to be notified when we do."
-      );
-    }
-  };
-
-  const handleRegisterInterest = async () => {
     try {
-      setMessage("Processing your request...");
-      await fetch("/api/interest", {
+      const response = await fetch("/api/interest", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(interestForm),
+        body: JSON.stringify({ email, postcode, suburb }),
       });
-      setMessage(
-        "Thank you! We will notify you when we start servicing your area."
-      );
+
+      if (response.ok) {
+        setMessage("Thanks! We'll notify you when we service your area.");
+        setEmail("");
+        setPostcode("");
+        setSuburb("");
+      } else {
+        setMessage("Something went wrong. Please try again.");
+      }
     } catch (error) {
-      console.error(error);
-      setMessage("Something went wrong. Please try again.");
+      setMessage("Error submitting form. Please try again.");
     }
+
+    setLoading(false);
   };
 
   return (
-    <section className={`${styles.section} py-16 px-4`}>
-      <div className={`${styles.container} px-4`}>
-        <h2 className="text-4xl font-extrabold mb-6 text-center text-white">
-          Service Areas
-        </h2>
-        <p className="text-lg text-[#ffe5e5] mb-8 text-center">
-          We currently service East and South Auckland.
-        </p>
+    <section id="service-area" className="w-full bg-gradient-to-r from-orange-500 to-pink-500 py-16">
+      <div className="container mx-auto px-4">
+        <div className="service-area-card max-w-3xl mx-auto">
+          <FaMapMarkerAlt className="text-4xl text-blue-600 mb-4" />
+          <h2 className="text-3xl font-bold mb-6">Service Areas</h2>
 
-        <div className={`${styles.formContainer} p-8 rounded-lg`}>
-          <h3 className="text-2xl font-bold mb-4 text-white text-center">
-            Check If We Service Your Address
-          </h3>
-          <form onSubmit={handleSubmit} className={styles.form}>
-            <input
-              type="text"
-              name="address"
-              placeholder="Street Address"
-              value={interestForm.address}
-              onChange={handleInputChange}
-              required
-              className={styles.input}
-            />
-            <input
-              type="text"
-              name="suburb"
-              placeholder="Suburb"
-              value={interestForm.suburb}
-              onChange={handleInputChange}
-              required
-              className={styles.input}
-            />
-            <input
-              type="text"
-              name="postcode"
-              placeholder="Postcode"
-              value={interestForm.postcode}
-              onChange={handleInputChange}
-              required
-              pattern="[0-9]{4}"
-              title="Please enter a valid 4-digit postcode"
-              className={styles.input}
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Your Email"
-              value={interestForm.email}
-              onChange={handleInputChange}
-              required
-              className={styles.input}
-            />
-            <Button
-              type={isInServiceArea === false ? "button" : "submit"}
-              onClick={
-                isInServiceArea === false ? handleRegisterInterest : undefined
-              }
-              className={`
-                w-full py-6 text-lg font-bold transition-all text-white
-                ${
-                  isInServiceArea === true
-                    ? "bg-green-600 hover:bg-green-700"
-                    : isInServiceArea === false
-                    ? "bg-blue-600 hover:bg-blue-700"
-                    : "bg-primary hover:bg-primary/90"
-                }
-              `}
+          <div className="mb-8">
+            <p className="text-xl mb-4">
+              We currently service all areas with 2000 postcodes.
+            </p>
+            <p className="text-gray-600">
+              Not in our service area? Register your interest below!
+            </p>
+          </div>
+
+          <form
+            onSubmit={handleInterestRegistration}
+            className="max-w-md mx-auto"
+          >
+            <div className="mb-4">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email"
+                className="input-3d w-full"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <input
+                type="text"
+                value={suburb}
+                onChange={(e) => setSuburb(e.target.value)}
+                placeholder="Your suburb"
+                className="input-3d w-full"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <input
+                type="text"
+                value={postcode}
+                onChange={(e) => setPostcode(e.target.value)}
+                placeholder="Your postcode"
+                className="input-3d w-full"
+                required
+                pattern="[0-9]*"
+                maxLength={4}
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="button-3d w-full"
             >
-              {isInServiceArea === null
-                ? "Check Availability"
-                : isInServiceArea
-                ? "Proceed to Booking"
-                : "Register Interest"}
-            </Button>
+              {loading ? "Registering..." : "Register Interest"}
+            </button>
           </form>
+
           {message && (
-            <p
-              className={`
-              mt-4 text-center
-              ${isInServiceArea ? "text-green-400" : "text-yellow-400"}
-            `}
+            <div
+              className={`mt-4 p-4 rounded ${
+                message.includes("Thanks")
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
+              }`}
             >
               {message}
-            </p>
+            </div>
           )}
         </div>
       </div>
     </section>
   );
 };
+
+export default ServiceAreas;

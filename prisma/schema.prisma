@@ -8,72 +8,25 @@ datasource db {
 }
 
 model Booking {
-  id             String     @id @default(cuid())
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
-  date           DateTime
-  time           String
-  frequency      String     // "once", "daily", "weekly", "monthly"
-  numberOfBags   Int
-  location       String
-  autoDeduct     Boolean    @default(false)
-  status         BookingStatus @default(PENDING) // Changed to enum
-  totalAmount    Float
-  paymentStatus  PaymentStatus @default(PENDING) // Changed to enum
-  paymentId      String?    // Stripe payment intent ID
-  stripeSessionId String?   @unique  // Added for Stripe checkout session
-  customerId     String     
-  customer       Customer   @relation(fields: [customerId], references: [id])
-  subscriptionId String?    // For recurring bookings
-  pickupInstructions String? // Added for special instructions
-  metadata       Json?      // Added for additional Stripe metadata
-}
+  id            String   @id @default(cuid())
+  streetAddress String
+  suburb        String
+  postcode      String
+  email         String
+  pickupDate    DateTime
+  status        String
+  createdAt     DateTime @default(now())
 
-// Added enums for better type safety
-enum BookingStatus {
-  PENDING
-  CONFIRMED
-  PICKED_UP
-  IN_PROGRESS
-  READY_FOR_DELIVERY
-  DELIVERED
-  COMPLETED
-  CANCELLED
-}
-
-enum PaymentStatus {
-  PENDING
-  PAID
-  FAILED
-  REFUNDED
-}
-
-model Customer {
-  id        String    @id @default(cuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  email     String    @unique
-  name      String
-  phone     String?
-  address   String?
-  bookings  Booking[]
-  stripeCustomerId String?  // For recurring payments
-}
-
-model TimeSlot {
-  id        String   @id @default(cuid())
-  date      DateTime
-  time      String
-  available Boolean  @default(true)
-
-  @@unique([date, time])
+  @@index([postcode])
+  @@index([pickupDate])
 }
 
 model Interest {
   id        String   @id @default(cuid())
   email     String
-  address   String
-  suburb    String
   postcode  String
+  suburb    String
   createdAt DateTime @default(now())
+
+  @@index([postcode])
 }

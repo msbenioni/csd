@@ -1,48 +1,35 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { calculatePrice } from "@/lib/utils";
+import prisma from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const {
-      date,
-      time,
-      frequency,
-      numberOfBags,
-      location,
-      autoDeduct,
-      customerEmail,
-      customerName,
-      customerPhone,
-    } = body;
+    const data = await request.json();
 
-    // Check if time slot is available
-    const timeSlot = await prisma.timeSlot.findUnique({
-      where: {
-        date_time: {
-          date: new Date(date),
-          time: time,
-        },
-      },
-    });
-
-    if (timeSlot && !timeSlot.available) {
+    // Validate postcode
+    if (!data.postcode.startsWith("2")) {
       return NextResponse.json(
-        { error: "Time slot no longer available" },
+        { error: "Service not available in this area" },
         { status: 400 }
       );
     }
 
-    const totalAmount = calculatePrice(numberOfBags);
-
-    const booking = await prisma.$transaction(async (prisma) => {
-      // ... rest of the existing POST logic ...
+    const booking = await prisma.booking.create({
+      data: {
+        streetAddress: data.streetAddress,
+        suburb: data.suburb,
+        postcode: data.postcode,
+        email: data.email,
+        pickupDate: new Date(data.pickupDate),
+        status: "PENDING",
+      },
     });
 
-    return NextResponse.json(booking);
+    // Here you could add email notification logic
+    // await sendConfirmationEmail(booking);
+
+    return NextResponse.json({ success: true, data: booking });
   } catch (error) {
-    console.error("Booking creation error:", error);
+    console.error("Booking error:", error);
     return NextResponse.json(
       { error: "Failed to create booking" },
       { status: 500 }
