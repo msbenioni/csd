@@ -8,20 +8,30 @@ import { loadStripe } from '@stripe/stripe-js';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 interface FormData {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
   streetAddress: string;
   suburb: string;
   postcode: string;
-  email: string;
   pickupDate?: string;
+  numberOfBags?: number;
+  specialInstructions?: string;
 }
 
 const BookingForm = () => {
   const [formData, setFormData] = useState<FormData>({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    email: "",
     streetAddress: "",
     suburb: "",
     postcode: "",
-    email: "",
     pickupDate: "",
+    numberOfBags: 1,
+    specialInstructions: "",
   });
   const [step, setStep] = useState(1);
   const [message, setMessage] = useState("");
@@ -72,11 +82,16 @@ const BookingForm = () => {
         setButtonText("Interest Registered");
         // Clear form data
         setFormData({
+          firstName: "",
+          lastName: "",
+          phone: "",
+          email: "",
           streetAddress: "",
           suburb: "",
           postcode: "",
-          email: "",
           pickupDate: "",
+          numberOfBags: 1,
+          specialInstructions: "",
         });
       } catch (_error) {
         setMessage("Error submitting form. Please try again.");
@@ -121,136 +136,161 @@ const BookingForm = () => {
     setLoading(false);
   };
 
+  const handleNextStep = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStep(step + 1);
+  };
+
+  const handlePrevStep = () => {
+    setStep(step - 1);
+  };
+
   return (
     <section id="booking-form" className="w-full bg-gradient-to-r from-orange-500 to-pink-500 py-16">
       <div className="container mx-auto px-4">
         <div className="booking-form-card max-w-2xl mx-auto">
-          <h2 className="text-3xl font-bold mb-8 text-center">
-            Start Your Booking
-          </h2>
+          {/* Progress Bar */}
+          <div className="mb-8">
+            <div className="flex justify-between">
+              <span className={`step ${step >= 1 ? 'active' : ''}`}>Personal Details</span>
+              <span className={`step ${step >= 2 ? 'active' : ''}`}>Address</span>
+              <span className={`step ${step >= 3 ? 'active' : ''}`}>Pickup Details</span>
+              <span className={`step ${step >= 4 ? 'active' : ''}`}>Review & Pay</span>
+            </div>
+          </div>
 
+          {/* Step 1: Personal Details */}
           {step === 1 && (
-            <form onSubmit={checkPostcode} className="space-y-4">
-              <div>
+            <form onSubmit={handleNextStep} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
                 <input
                   type="text"
-                  name="streetAddress"
-                  value={formData.streetAddress}
+                  name="firstName"
+                  value={formData.firstName}
                   onChange={handleInputChange}
-                  placeholder="Street Address"
-                  className="input-3d w-full"
+                  placeholder="First Name"
+                  className="input-3d"
                   required
                 />
-              </div>
-              <div>
                 <input
                   type="text"
-                  name="suburb"
-                  value={formData.suburb}
+                  name="lastName"
+                  value={formData.lastName}
                   onChange={handleInputChange}
-                  placeholder="Suburb"
-                  className="input-3d w-full"
+                  placeholder="Last Name"
+                  className="input-3d"
                   required
                 />
               </div>
-              <div>
-                <input
-                  type="text"
-                  name="postcode"
-                  value={formData.postcode}
-                  onChange={handleInputChange}
-                  placeholder="Postcode"
-                  className="input-3d w-full"
-                  required
-                  pattern="\d{4}"
-                  minLength={4}
-                  maxLength={4}
-                  title="Please enter a 4-digit postcode"
-                />
-              </div>
-              <div>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="Email"
-                  className="input-3d w-full"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="button-3d w-full"
-                disabled={loading}
-              >
-                {loading ? "Checking..." : buttonText}
-              </button>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                placeholder="Phone Number"
+                className="input-3d w-full"
+                required
+                pattern="[0-9]{10}"
+                title="Please enter a valid 10-digit phone number"
+              />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="Email"
+                className="input-3d w-full"
+                required
+              />
+              <button type="submit" className="button-3d w-full">Next</button>
             </form>
           )}
 
-          {step === 2 && (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <select
-                  name="pickupDate"
-                  value={formData.pickupDate}
-                  onChange={handleInputChange}
-                  className="input-3d w-full"
-                  required
-                >
-                  <option value="">Select Pickup Date</option>
-                  {getAvailableDates().map((date) => (
-                    <option
-                      key={date.toISOString()}
-                      value={date.toISOString().split("T")[0]}
-                    >
-                      {date.toLocaleDateString("en-AU", {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <p className="text-gray-600 text-sm">
-                Pickup times are between 7am - 4pm, depending on our current
-                workload.
-              </p>
-              <p className="text-gray-600 text-sm">
-                All rubbish must be bagged and placed on the roadside where your
-                council bins are collected.
-              </p>
-              <button
-                type="submit"
-                className="button-3d w-full"
-                disabled={loading}
-              >
-                {loading ? "Confirming..." : "Confirm Booking"}
-              </button>
-            </form>
-          )}
+          {/* Step 2: Address (your existing address form) */}
 
+          {/* Step 3: Pickup Details */}
           {step === 3 && (
-            <div className="success-message">
-              <FaCheck className="text-4xl text-green-500 mb-4" />
-              <p className="text-xl text-green-700">{message}</p>
+            <form onSubmit={handleNextStep} className="space-y-4">
+              <select
+                name="pickupDate"
+                value={formData.pickupDate}
+                onChange={handleInputChange}
+                className="input-3d w-full"
+                required
+              >
+                {/* Your existing date options */}
+              </select>
+              
+              <div className="number-input-container">
+                <label className="block text-gray-700 mb-2">Number of Bags ($8 each)</label>
+                <input
+                  type="number"
+                  name="numberOfBags"
+                  value={formData.numberOfBags}
+                  onChange={handleInputChange}
+                  min="1"
+                  max="20"
+                  className="input-3d w-full"
+                  required
+                />
+              </div>
+
+              <textarea
+                name="specialInstructions"
+                value={formData.specialInstructions}
+                onChange={handleInputChange}
+                placeholder="Special Instructions (optional)"
+                className="input-3d w-full h-24"
+              />
+              <button type="submit" className="button-3d w-full">Review Booking</button>
+            </form>
+          )}
+
+          {/* Step 4: Review & Pay */}
+          {step === 4 && (
+            <div className="space-y-6">
+              <h3 className="text-xl font-semibold">Review Your Booking</h3>
+              
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h4 className="font-medium">Personal Details</h4>
+                    <p>{formData.firstName} {formData.lastName}</p>
+                    <p>{formData.phone}</p>
+                    <p>{formData.email}</p>
+                  </div>
+                  <div>
+                    <h4 className="font-medium">Pickup Address</h4>
+                    <p>{formData.streetAddress}</p>
+                    <p>{formData.suburb}, {formData.postcode}</p>
+                  </div>
+                </div>
+                
+                <div className="mt-4">
+                  <h4 className="font-medium">Pickup Details</h4>
+                  <p>Date: {formData.pickupDate}</p>
+                  <p>Number of Bags: {formData.numberOfBags}</p>
+                  <p>Total Cost: ${(formData.numberOfBags || 0) * 8}</p>
+                  {formData.specialInstructions && (
+                    <div className="mt-2">
+                      <h4 className="font-medium">Special Instructions</h4>
+                      <p>{formData.specialInstructions}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <button 
+                onClick={handlePayment}
+                className="button-3d w-full"
+                disabled={loading}
+              >
+                {loading ? "Processing..." : `Pay $${(formData.numberOfBags || 0) * 8}`}
+              </button>
             </div>
           )}
 
-          {message && step !== 3 && (
-            <div
-              className={`mt-4 p-4 rounded ${
-                message.includes("don't service")
-                  ? "bg-blue-100 text-blue-700"
-                  : "bg-red-100 text-red-700"
-              }`}
-            >
-              {message}
-            </div>
-          )}
+          {/* Success Message (your existing success message) */}
         </div>
       </div>
     </section>
