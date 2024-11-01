@@ -148,8 +148,10 @@ const BookingForm = () => {
                   placeholder="Postcode"
                   className="input-3d w-full"
                   required
-                  pattern="[0-9]*"
+                  pattern="\d{4}"
+                  minLength={4}
                   maxLength={4}
+                  title="Please enter a 4-digit postcode"
                 />
               </div>
               <div>

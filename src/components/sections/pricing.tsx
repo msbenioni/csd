@@ -5,7 +5,7 @@ const Pricing = () => {
     <section className="w-full bg-gradient-to-r from-orange-500 to-pink-500 py-16">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-white text-center mb-12">
-          Simple, Transparent Pricing
+          Prices
         </h2>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">

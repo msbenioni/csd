@@ -2,12 +2,12 @@ import Image from "next/image";
 
 const HeroSection = () => {
   return (
-    <section className="w-full bg-gradient-to-r from-orange-500 to-pink-500 py-20">
+    <section className="w-full bg-gradient-to-r from-orange-500 to-pink-500 pt-20">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-center gap-8">
           {/* Left Text */}
           <div className="text-center md:text-right md:w-1/3">
-            <h1 className="text-7xl font-bold text-white">Simple</h1>
+            <h1 className="text-7xl font-bold text-white">Simple Affordable</h1>
           </div>
 
           {/* Center Image - Clickable */}
@@ -25,7 +25,7 @@ const HeroSection = () => {
               priority
             />
             <p className="text-xl text-white text-center mt-4">
-              $8 per bag, placed at your curb. We handle the rest.
+              Book. Pay. Put on the curb. We Pickup. Easy!
             </p>
           </a>
 
