@@ -18,10 +18,10 @@ const Pricing = () => {
             <p className="text-gray-600">No loose items</p>
           </div>
 
-          {/* Service Fee Card */}
+          {/* Pickup Fee Card */}
           <div className="pricing-card">
             <FaTools className="text-4xl text-blue-600 mb-4" />
-            <h3 className="text-2xl font-bold mb-2">Service Fee</h3>
+            <h3 className="text-2xl font-bold mb-2">Pickup Fee</h3>
             <p className="text-4xl font-bold text-blue-600 mb-4">$6</p>
             <p className="text-gray-600">One-time fee per pickup</p>
           </div>

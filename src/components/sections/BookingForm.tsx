@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { FaCheck } from "react-icons/fa";
-import { loadStripe } from '@stripe/stripe-js';
+import { loadStripe } from "@stripe/stripe-js";
 
 // Initialize Stripe (replace with your publishable key)
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 interface FormData {
   firstName: string;
@@ -19,6 +20,20 @@ interface FormData {
   numberOfBags?: number;
   specialInstructions?: string;
 }
+
+const calculateTotalPrice = (numberOfBags: number = 0) => {
+  const bagCost = numberOfBags * 8;
+  const pickupFee = 6;
+  const subtotal = bagCost + pickupFee;
+  const tax = subtotal * 0.125; // 12.5% tax
+  return {
+    bagCost,
+    pickupFee,
+    subtotal,
+    tax,
+    total: subtotal + tax
+  };
+};
 
 const BookingForm = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -42,7 +57,7 @@ const BookingForm = () => {
   const getAvailableDates = () => {
     const dates = [];
     const now = new Date();
-    let currentDate = new Date();
+    const currentDate = new Date(now.getTime());
 
     // If it's after 2 PM, start from tomorrow
     if (now.getHours() >= 14) {
@@ -57,7 +72,9 @@ const BookingForm = () => {
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -67,7 +84,7 @@ const BookingForm = () => {
     setLoading(true);
 
     if (formData.postcode.startsWith("2")) {
-      setStep(2);
+      setStep(3);
       setMessage("");
     } else {
       try {
@@ -77,7 +94,7 @@ const BookingForm = () => {
           body: JSON.stringify(formData),
         });
         setMessage(
-          "Sorry we do not service this area yet but wehave registered your interest and will notify you when we expand to your area."
+          "Sorry we do not service this area yet but we have registered your interest and will notify you when we expand to your area."
         );
         setButtonText("Interest Registered");
         // Clear form data
@@ -93,8 +110,12 @@ const BookingForm = () => {
           numberOfBags: 1,
           specialInstructions: "",
         });
-      } catch (_error) {
-        setMessage("Error submitting form. Please try again.");
+      } catch (error) {
+        setMessage(
+          `Error submitting form: ${
+            error instanceof Error ? error.message : "Please try again."
+          }`
+        );
       }
     }
     setLoading(false);
@@ -113,24 +134,28 @@ const BookingForm = () => {
       });
 
       if (!bookingResponse.ok) {
-        throw new Error('Failed to create booking');
+        throw new Error("Failed to create booking");
       }
 
       const { sessionId } = await bookingResponse.json();
 
       // Redirect to Stripe Checkout
       const stripe = await stripePromise;
-      if (!stripe) throw new Error('Stripe failed to load');
+      if (!stripe) throw new Error("Stripe failed to load");
 
       const { error } = await stripe.redirectToCheckout({
         sessionId,
       });
 
       if (error) {
-        setMessage(error.message);
+        setMessage(error.message || "An error occurred");
       }
     } catch (error) {
-      setMessage("Error creating booking. Please try again.");
+      setMessage(
+        `Error creating booking: ${
+          error instanceof Error ? error.message : "Please try again."
+        }`
+      );
     }
 
     setLoading(false);
@@ -141,21 +166,28 @@ const BookingForm = () => {
     setStep(step + 1);
   };
 
-  const handlePrevStep = () => {
-    setStep(step - 1);
-  };
-
   return (
-    <section id="booking-form" className="w-full bg-gradient-to-r from-orange-500 to-pink-500 py-16">
+    <section
+      id="booking-form"
+      className="w-full bg-gradient-to-r from-orange-500 to-pink-500 py-16"
+    >
       <div className="container mx-auto px-4">
         <div className="booking-form-card max-w-2xl mx-auto">
           {/* Progress Bar */}
           <div className="mb-8">
             <div className="flex justify-between">
-              <span className={`step ${step >= 1 ? 'active' : ''}`}>Personal Details</span>
-              <span className={`step ${step >= 2 ? 'active' : ''}`}>Address</span>
-              <span className={`step ${step >= 3 ? 'active' : ''}`}>Pickup Details</span>
-              <span className={`step ${step >= 4 ? 'active' : ''}`}>Review & Pay</span>
+              <span className={`step ${step >= 1 ? "active" : ""}`}>
+                Personal Details
+              </span>
+              <span className={`step ${step >= 2 ? "active" : ""}`}>
+                Address
+              </span>
+              <span className={`step ${step >= 3 ? "active" : ""}`}>
+                Pickup Details
+              </span>
+              <span className={`step ${step >= 4 ? "active" : ""}`}>
+                Review & Pay
+              </span>
             </div>
           </div>
 
@@ -202,34 +234,95 @@ const BookingForm = () => {
                 className="input-3d w-full"
                 required
               />
-              <button type="submit" className="button-3d w-full">Next</button>
+              <button type="submit" className="button-3d w-full">
+                Next
+              </button>
             </form>
           )}
 
-          {/* Step 2: Address (your existing address form) */}
+          {/* Step 2: Address */}
+          {step === 2 && (
+            <form onSubmit={checkPostcode} className="space-y-4">
+              <input
+                type="text"
+                name="streetAddress"
+                value={formData.streetAddress}
+                onChange={handleInputChange}
+                placeholder="Street Address"
+                className="input-3d w-full"
+                required
+              />
+              <input
+                type="text"
+                name="suburb"
+                value={formData.suburb}
+                onChange={handleInputChange}
+                placeholder="Suburb"
+                className="input-3d w-full"
+                required
+              />
+              <input
+                type="text"
+                name="postcode"
+                value={formData.postcode}
+                onChange={handleInputChange}
+                placeholder="Postcode"
+                className="input-3d w-full"
+                required
+              />
+              <button
+                type="submit"
+                className="button-3d w-full"
+                disabled={loading}
+              >
+                {loading ? "Checking..." : buttonText}
+              </button>
+            </form>
+          )}
 
           {/* Step 3: Pickup Details */}
           {step === 3 && (
             <form onSubmit={handleNextStep} className="space-y-4">
+              <label htmlFor="pickupDate" className="block text-gray-700 mb-2">
+                Select Pickup Date
+              </label>
               <select
+                id="pickupDate"
                 name="pickupDate"
                 value={formData.pickupDate}
                 onChange={handleInputChange}
                 className="input-3d w-full"
                 required
               >
-                {/* Your existing date options */}
+                <option value="">Select a date</option>
+                {getAvailableDates().map((date) => (
+                  <option
+                    key={date.toISOString()}
+                    value={date.toISOString().split("T")[0]}
+                  >
+                    {date.toLocaleDateString("en-AU", {
+                      weekday: "long",
+                      day: "numeric",
+                      month: "long",
+                    })}
+                  </option>
+                ))}
               </select>
-              
+
               <div className="number-input-container">
-                <label className="block text-gray-700 mb-2">Number of Bags ($8 each)</label>
+                <label
+                  htmlFor="numberOfBags"
+                  className="block text-gray-700 mb-2"
+                >
+                  Number of Bags ($8 each + $6 pickup fee + 12.5% tax)
+                </label>
                 <input
+                  id="numberOfBags"
                   type="number"
                   name="numberOfBags"
                   value={formData.numberOfBags}
                   onChange={handleInputChange}
                   min="1"
-                  max="20"
                   className="input-3d w-full"
                   required
                 />
@@ -242,7 +335,9 @@ const BookingForm = () => {
                 placeholder="Special Instructions (optional)"
                 className="input-3d w-full h-24"
               />
-              <button type="submit" className="button-3d w-full">Review Booking</button>
+              <button type="submit" className="button-3d w-full">
+                Review Booking
+              </button>
             </form>
           )}
 
@@ -250,27 +345,42 @@ const BookingForm = () => {
           {step === 4 && (
             <div className="space-y-6">
               <h3 className="text-xl font-semibold">Review Your Booking</h3>
-              
+
               <div className="bg-white p-6 rounded-lg shadow-sm">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <h4 className="font-medium">Personal Details</h4>
-                    <p>{formData.firstName} {formData.lastName}</p>
+                    <p>
+                      {formData.firstName} {formData.lastName}
+                    </p>
                     <p>{formData.phone}</p>
                     <p>{formData.email}</p>
                   </div>
                   <div>
                     <h4 className="font-medium">Pickup Address</h4>
                     <p>{formData.streetAddress}</p>
-                    <p>{formData.suburb}, {formData.postcode}</p>
+                    <p>
+                      {formData.suburb}, {formData.postcode}
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="mt-4">
                   <h4 className="font-medium">Pickup Details</h4>
                   <p>Date: {formData.pickupDate}</p>
                   <p>Number of Bags: {formData.numberOfBags}</p>
-                  <p>Total Cost: ${(formData.numberOfBags || 0) * 8}</p>
+                  
+                  {/* New pricing breakdown */}
+                  <div className="mt-2 space-y-1">
+                    <p>Bags Cost: ${calculateTotalPrice(formData.numberOfBags).bagCost.toFixed(2)}</p>
+                    <p>Pickup Fee: ${calculateTotalPrice().pickupFee.toFixed(2)}</p>
+                    <p>Subtotal: ${calculateTotalPrice(formData.numberOfBags).subtotal.toFixed(2)}</p>
+                    <p>Tax (12.5%): ${calculateTotalPrice(formData.numberOfBags).tax.toFixed(2)}</p>
+                    <p className="font-bold">
+                      Total: ${calculateTotalPrice(formData.numberOfBags).total.toFixed(2)}
+                    </p>
+                  </div>
+
                   {formData.specialInstructions && (
                     <div className="mt-2">
                       <h4 className="font-medium">Special Instructions</h4>
@@ -280,17 +390,22 @@ const BookingForm = () => {
                 </div>
               </div>
 
-              <button 
-                onClick={handlePayment}
+              <button
+                onClick={handleSubmit}
                 className="button-3d w-full"
                 disabled={loading}
               >
-                {loading ? "Processing..." : `Pay $${(formData.numberOfBags || 0) * 8}`}
+                {loading
+                  ? "Processing..."
+                  : `Pay $${calculateTotalPrice(formData.numberOfBags).total.toFixed(2)}`}
               </button>
             </div>
           )}
 
           {/* Success Message (your existing success message) */}
+          {message && (
+            <div className="mt-4 text-red-600 text-center">{message}</div>
+          )}
         </div>
       </div>
     </section>
