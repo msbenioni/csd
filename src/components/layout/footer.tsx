@@ -1,4 +1,5 @@
 "use client"; // Add this at the top of the file
+import Link from 'next/link';
 
 export default function Footer() {
   return (
@@ -16,14 +17,14 @@ export default function Footer() {
           <h4 className="font-bold text-lg mb-2">Quick Links</h4>
           <ul>
             <li>
-              <a href="/#pricing" className="hover:text-yellow-400">
+              <Link href="/#pricing" className="hover:text-yellow-400">
                 Pricing
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/booking" className="hover:text-yellow-400">
+              <Link href="/booking" className="hover:text-yellow-400">
                 Book Now
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

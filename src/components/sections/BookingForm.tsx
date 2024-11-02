@@ -33,11 +33,15 @@ const calculateTotalPrice = (numberOfBags: number = 0) => {
     pickupFee,
     subtotal,
     tax,
-    total: subtotal + tax
+    total: subtotal + tax,
   };
 };
 
-const BookingForm = () => {
+interface BookingFormProps {
+  isAdmin?: boolean;
+}
+
+export function BookingForm({ isAdmin = false }: BookingFormProps) {
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -125,6 +129,13 @@ const BookingForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isAdmin) {
+      // Special handling for admin
+      console.log('Admin submission');
+    } else {
+      // Normal user handling
+      console.log('User submission');
+    }
     setLoading(true);
 
     try {
@@ -184,7 +195,11 @@ const BookingForm = () => {
                     <FontAwesomeIcon icon={faCheck} />
                   </span>
                 ) : null}
-                <span className={`${step === 1 ? 'text-blue-600 font-bold' : 'text-gray-600'}`}>
+                <span
+                  className={`${
+                    step === 1 ? "text-blue-600 font-bold" : "text-gray-600"
+                  }`}
+                >
                   Personal Details
                 </span>
               </div>
@@ -195,7 +210,11 @@ const BookingForm = () => {
                     <FontAwesomeIcon icon={faCheck} />
                   </span>
                 ) : null}
-                <span className={`${step === 2 ? 'text-blue-600 font-bold' : 'text-gray-600'}`}>
+                <span
+                  className={`${
+                    step === 2 ? "text-blue-600 font-bold" : "text-gray-600"
+                  }`}
+                >
                   Address
                 </span>
               </div>
@@ -206,7 +225,11 @@ const BookingForm = () => {
                     <FontAwesomeIcon icon={faCheck} />
                   </span>
                 ) : null}
-                <span className={`${step === 3 ? 'text-blue-600 font-bold' : 'text-gray-600'}`}>
+                <span
+                  className={`${
+                    step === 3 ? "text-blue-600 font-bold" : "text-gray-600"
+                  }`}
+                >
                   Pickup Details
                 </span>
               </div>
@@ -217,7 +240,11 @@ const BookingForm = () => {
                     <FontAwesomeIcon icon={faCheck} />
                   </span>
                 ) : null}
-                <span className={`${step === 4 ? 'text-blue-600 font-bold' : 'text-gray-600'}`}>
+                <span
+                  className={`${
+                    step === 4 ? "text-blue-600 font-bold" : "text-gray-600"
+                  }`}
+                >
                   Review & Pay
                 </span>
               </div>
@@ -402,15 +429,35 @@ const BookingForm = () => {
                   <h4 className="font-medium">Pickup Details</h4>
                   <p>Date: {formData.pickupDate}</p>
                   <p>Number of Bags: {formData.numberOfBags}</p>
-                  
+
                   {/* New pricing breakdown */}
                   <div className="mt-2 space-y-1">
-                    <p>Bags Cost: ${calculateTotalPrice(formData.numberOfBags).bagCost.toFixed(2)}</p>
-                    <p>Pickup Fee: ${calculateTotalPrice().pickupFee.toFixed(2)}</p>
-                    <p>Subtotal: ${calculateTotalPrice(formData.numberOfBags).subtotal.toFixed(2)}</p>
-                    <p>Tax (12.5%): ${calculateTotalPrice(formData.numberOfBags).tax.toFixed(2)}</p>
+                    <p>
+                      Bags Cost: $
+                      {calculateTotalPrice(
+                        formData.numberOfBags
+                      ).bagCost.toFixed(2)}
+                    </p>
+                    <p>
+                      Pickup Fee: ${calculateTotalPrice().pickupFee.toFixed(2)}
+                    </p>
+                    <p>
+                      Subtotal: $
+                      {calculateTotalPrice(
+                        formData.numberOfBags
+                      ).subtotal.toFixed(2)}
+                    </p>
+                    <p>
+                      Tax (12.5%): $
+                      {calculateTotalPrice(formData.numberOfBags).tax.toFixed(
+                        2
+                      )}
+                    </p>
                     <p className="font-bold">
-                      Total: ${calculateTotalPrice(formData.numberOfBags).total.toFixed(2)}
+                      Total: $
+                      {calculateTotalPrice(formData.numberOfBags).total.toFixed(
+                        2
+                      )}
                     </p>
                   </div>
 
@@ -430,7 +477,9 @@ const BookingForm = () => {
               >
                 {loading
                   ? "Processing..."
-                  : `Pay $${calculateTotalPrice(formData.numberOfBags).total.toFixed(2)}`}
+                  : `Pay $${calculateTotalPrice(
+                      formData.numberOfBags
+                    ).total.toFixed(2)}`}
               </button>
             </div>
           )}
@@ -443,6 +492,6 @@ const BookingForm = () => {
       </div>
     </section>
   );
-};
+}
 
 export default BookingForm;

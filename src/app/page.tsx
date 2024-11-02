@@ -1,8 +1,7 @@
 import HeroSection from "@/components/sections/HeroSection";
-import Pricing from "@/components/sections/Pricing";
 import ServiceAreas from "@/components/sections/ServiceAreas";
 import BookingForm from "@/components/sections/BookingForm";
-
+import Pricing from "@/components/sections/Pricing";
 export default function Home() {
   return (
     <main className="scroll-smooth">

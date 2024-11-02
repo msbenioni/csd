@@ -29,7 +29,8 @@ const ServiceAreas = () => {
       } else {
         setMessage("Something went wrong. Please try again.");
       }
-    } catch (error) {
+    } catch (err) {
+      console.error('Error in service areas:', err);
       setMessage("Error submitting form. Please try again.");
     }
 

@@ -1,5 +1,15 @@
-import React from "react";
+import { InputHTMLAttributes } from 'react';
 
-export const Input = ({ children, ...props }: React.HTMLAttributes<HTMLInputElement> & { children: React.ReactNode }) => {
-  return <input {...props} />;
-};
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  // Add any custom props here if needed
+  label?: string;
+}
+
+export function Input({ label, ...props }: InputProps) {
+  return (
+    <div>
+      {label && <label>{label}</label>}
+      <input {...props} />
+    </div>
+  );
+}
